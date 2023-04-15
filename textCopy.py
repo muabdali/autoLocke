@@ -17,6 +17,32 @@ cordsDictionary = {
 }
 
 routePokemonDict = {
+    'Pallet Town':None,
+    'Route 1':None,
+    'Viridian City':None,
+    'Route 22':None,
+    'Route 2':None,
+    'Viridian Forest':None,
+    'Route 3':None,
+    'Route 4':None,
+    'Mt. Moon':None,
+    'Cerulean City':None,
+    'Route 24':None,
+    'Route 25':None,
+    'Route 5':None,
+    'Route 6':None,
+    'Vermillion City':None,
+    'Route 11':None,
+    'Digletts Cave':None,
+    'Route 9':None,
+    'Route 10':None,
+    'Rock Tunnel':None,
+    'Pokémon Tower':None,
+    'Route 12':None,
+    'Route 8':None,
+    'Route 7':None,
+    'Celadon City':None,
+    'Saffron City':None,
     
 
 }
@@ -48,7 +74,7 @@ class ImageDiscover:
             self.takeScreenshot(section_name)
             self.screenshotAnalyze(requestedImage
                                    )
-            time.sleep(0.1)
+            time.sleep(1)
 
 
 
