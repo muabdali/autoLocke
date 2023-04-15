@@ -10,25 +10,29 @@ x, y, width, height = 242, 47, 745, 121
 #screenshot.save('screenshot.png')
 
 # Load the image file and extract text from it
-image = Image.open('screenshot.png')
-text = pytesseract.image_to_string(image)
-
-# Print the extracted text
-print(text)
-
 cordsDictionary = {
-    'Route':[242, 47, 745, 121]
-
-
-
-
+    'Route':[242, 47, 745, 121],
+    'Pokemon':[1,2,34,5]
 }
 
-class imageAnalyze:
+class ImageAnalyze:
     def __init__(self, cordsDictionary):
         self.dict = cordsDictionary
-    def screenshotText(section):
-        x = cordsDictionary[section[1]]
-        y = cordsDictionary[section[2]]
-        width = cordsDictionary[section[3]]
-        height = cordsDictionary[section[4]]
+    def takeScreenshot(self, section_name):
+        section = cordsDictionary[section_name]
+        x, y, width, height = section[0], section[1], section[2], section[3]
+
+        screenshot = pyautogui.screenshot(region=(x, y, width, height))
+        screenshot.save(f'{section}Image.png')
+    def screenshotText(self, requestedImage):
+        topLeftImage = Image.open(requestedImage)
+        text = pytesseract.image_to_string(topLeftImage)
+        print(text)
+
+
+
+
+"""
+ib = ImageAnalyze(cordsDictionary)
+ib.screenshotText('routeImage.png')
+"""
