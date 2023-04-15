@@ -15,22 +15,34 @@ cordsDictionary = {
     'Pokemon':[1,2,34,5]
 }
 
-class ImageAnalyze:
+routePokemonDict = {
+    
+
+}
+
+
+class ImageDiscover:
     def __init__(self, cordsDictionary):
         self.dict = cordsDictionary
     def takeScreenshot(self, section_name):
-        section = cordsDictionary[section_name]
-        x, y, width, height = section[0], section[1], section[2], section[3]
-
+        print(section_name)
+        self.section = cordsDictionary[section_name]
+        x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
-        screenshot.save(f'{section}Image.png')
-    def screenshotText(self, requestedImage):
-        topLeftImage = Image.open(requestedImage)
-        text = pytesseract.image_to_string(topLeftImage)
+        screenshot.save(f'{section_name}Image.png')
+    def screenshotAnalyze(self, requestedImage):
+        imageGiven = Image.open(requestedImage)
+        text = pytesseract.image_to_string(imageGiven)
         print(text)
 
 
 
+
+
+
+
+ia = ImageDiscover(cordsDictionary)
+ia.screenshotAnalyze('routeImage.png')
 
 """
 ib = ImageAnalyze(cordsDictionary)
