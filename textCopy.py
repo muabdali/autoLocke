@@ -43,7 +43,6 @@ routePokemonDict = {
     'Route 7':None,
     'Celadon City':None,
     'Saffron City':None,
-    
 
 }
 
@@ -57,6 +56,9 @@ class ImageDiscover:
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         screenshot.save(f'{section_name}Image.png')
+    def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):
+        self.dict[CurrentRoute] = CaughtPokemon
+        print(self.dict[CurrentRoute])
 
     def screenshotAnalyze(self, requestedImage):
 
@@ -81,7 +83,8 @@ class ImageDiscover:
 
 
 ia = ImageDiscover(cordsDictionary)
-ia.takeAnalyzeLoop('routeImage.png', 'Route')
+ia.appendRoutePokeDict('Route 1', 'Charizard')
+
 
 """
 ib = ImageAnalyze(cordsDictionary)
