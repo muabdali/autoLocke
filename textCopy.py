@@ -13,7 +13,7 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
-    'Pokemon':[1,2,34,5]
+    'Pokemon':[270, 70, 745, 121]
 }
 
 routePokemonDict = {
@@ -69,8 +69,9 @@ class ImageDiscover:
             print(text)
             self.oldtext = text
 
-    def encounterDetect(self):
-        self.takeScreenshot()
+    def encounterDetect(self, section_name):
+        self.takeScreenshot(section_name)
+
 
 
 
