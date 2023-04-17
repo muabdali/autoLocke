@@ -13,7 +13,7 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
-    'Pokemon':[270, 70, 745, 121]
+    'Pokemon':[300, 110, 450, 121]
 }
 
 routePokemonDict = {
@@ -87,7 +87,7 @@ class ImageDiscover:
 
 
 ia = ImageDiscover(cordsDictionary)
-ia.appendRoutePokeDict('Route 1', 'Charizard')
+ia.encounterDetect('Pokemon')
 
 
 """
