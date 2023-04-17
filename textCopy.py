@@ -2,6 +2,7 @@ import pyautogui
 import pytesseract
 from PIL import Image
 import time
+from fuzzyCheck import fuzzChecker
 
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
@@ -66,8 +67,12 @@ class ImageDiscover:
         text = pytesseract.image_to_string(imageGiven)
 
         if self.oldtext != text:
-            print(text)
+            #print(text)
             self.oldtext = text
+            
+            # fuzzChecker checks if the scanned text exists in the NatDexPokemonG3.txt, which is the txt file with ALL the pokemon names.
+            fuzzChecker.checkList('NatDexPokemonG3.txt', text)
+            
 
     def encounterDetect(self, section_name):
         self.takeScreenshot(section_name)
@@ -83,6 +88,7 @@ class ImageDiscover:
             self.screenshotAnalyze(requestedImage)
             self.takeScreenshot(section_name2)
             self.screenshotAnalyze(requestedImage2)
+            
             time.sleep(1)
 
 
