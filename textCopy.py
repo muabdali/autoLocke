@@ -69,6 +69,9 @@ class ImageDiscover:
             print(text)
             self.oldtext = text
 
+    def encounterDetect(self):
+        self.takeScreenshot()
+
 
 
     def takeAnalyzeLoop(self, requestedImage, section_name):
