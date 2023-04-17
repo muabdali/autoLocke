@@ -75,11 +75,14 @@ class ImageDiscover:
 
 
 
-    def takeAnalyzeLoop(self, requestedImage, section_name):
+    def takeAnalyzeLoop(self, requestedImage, section_name, requestedImage2, section_name2):
         while True:
             self.takeScreenshot(section_name)
             self.screenshotAnalyze(requestedImage
                                    )
+            self.screenshotAnalyze(requestedImage)
+            self.takeScreenshot(section_name2)
+            self.screenshotAnalyze(requestedImage2)
             time.sleep(1)
 
 
@@ -87,7 +90,7 @@ class ImageDiscover:
 
 
 ia = ImageDiscover(cordsDictionary)
-ia.encounterDetect('Pokemon')
+ia.takeAnalyzeLoop(requestedImage='routeImage.png', section_name='Route', requestedImage2='PokemonImage.png',section_name2='Pokemon')
 
 
 """
