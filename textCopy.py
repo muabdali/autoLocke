@@ -52,6 +52,7 @@ class ImageDiscover:
     def __init__(self, cordsDictionary):
         self.dict = cordsDictionary
         self.oldtext = ''
+        self.currentPokemon = ''
     def takeScreenshot(self, section_name):
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
@@ -65,13 +66,26 @@ class ImageDiscover:
 
         imageGiven = Image.open(requestedImage)
         text = pytesseract.image_to_string(imageGiven)
+        if requestedImage == 'routeImage.png':
+            print("route")
+            print(text)
+            if text in routePokemonDict:
+                print("in dict")
+        elif requestedImage == 'PokemonImage.png':
+            print('pokemon')
+            if text in 'NatDexPokemonG3.txt':
+                print('existing pokemon')
 
+        """
         if self.oldtext != text:
             #print(text)
             self.oldtext = text
             
             # fuzzChecker checks if the scanned text exists in the NatDexPokemonG3.txt, which is the txt file with ALL the pokemon names.
-            fuzzChecker.checkList('NatDexPokemonG3.txt', text)
+            best_match = fuzzChecker.checkList('NatDexPokemonG3.txt', text)
+            return best_match
+        """
+            
             
 
     def encounterDetect(self, section_name):
@@ -83,13 +97,10 @@ class ImageDiscover:
     def takeAnalyzeLoop(self, requestedImage, section_name, requestedImage2, section_name2):
         while True:
             self.takeScreenshot(section_name)
-            self.screenshotAnalyze(requestedImage
-                                   )
             self.screenshotAnalyze(requestedImage)
             self.takeScreenshot(section_name2)
             self.screenshotAnalyze(requestedImage2)
-            
-            time.sleep(1)
+            time.sleep(0.1)
 
 
 
