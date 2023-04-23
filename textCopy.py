@@ -19,43 +19,43 @@ cordsDictionary = {
 }
 
 routePokemonDict = {
-    'Pallet Town':None,
-    'Route 1':None,
-    'Viridian City':None,
-    'Route 22':None,
-    'Route 2':None,
-    'Viridian Forest':None,
-    'Route 3':None,
-    'Route 4':None,
-    'Mt. Moon':None,
-    'Cerulean City':None,
-    'Route 24':None,
-    'Route 25':None,
-    'Route 5':None,
-    'Route 6':None,
-    'Vermillion City':None,
-    'Route 11':None,
-    'Digletts Cave':None,
-    'Route 9':None,
-    'Route 10':None,
-    'Rock Tunnel':None,
-    'Pokémon Tower':None,
-    'Route 12':None,
-    'Route 8':None,
-    'Route 7':None,
-    'Celadon City':None,
-    'Saffron City':None,
+    'PALLET TOWN': None,
+    'ROUTE 1': None,
+    'VIRIDIAN CITY': None,
+    'ROUTE 22': None,
+    'ROUTE 2': None,
+    'VIRIDIAN FOREST': None,
+    'ROUTE 3': None,
+    'ROUTE 4': None,
+    'MT. MOON': None,
+    'CERULEAN CITY': None,
+    'ROUTE 24': None,
+    'ROUTE 25': None,
+    'ROUTE 5': None,
+    'ROUTE 6': None,
+    'VERMILLION CITY': None,
+    'ROUTE 11': None,
+    'DIGLETTS CAVE': None,
+    'ROUTE 9': None,
+    'ROUTE 10': None,
+    'ROCK TUNNEL': None,
+    'POKÉMON TOWER': None,
+    'ROUTE 12': None,
+    'ROUTE 8': None,
+    'ROUTE 7': None,
+    'CELADON CITY': None,
+    'SAFFRON CITY': None
 
 }
 
 
 class ImageDiscover:
-    def __init__(self, cordsDictionary):
+    def __init__(self, cordsDictionary, routeDict):
         self.dict = cordsDictionary
         self.oldtext = ''
         self.currentPokemon = ''
         self.currentRoute = ''
-
+        self.routeDictionary = routeDict
 
     def takeScreenshot(self, section_name):
         self.section = cordsDictionary[section_name]
@@ -76,9 +76,10 @@ class ImageDiscover:
         if requestedImage == 'routeImage.png':
             print("route")
             print(text)
-            if text in routePokemonDict:
+            stripText = text.strip()
+            if stripText in self.routeDictionary:
                 print("in dict")
-                self.currentRoute = text
+                self.currentRoute = stripText
         elif requestedImage == 'PokemonImage.png':
             print('pokemon')
             if text in 'NatDexPokemonG3.txt':
@@ -114,7 +115,7 @@ class ImageDiscover:
             self.screenshotAnalyze(requestedImage2)
             time.sleep(0.1)
 
-ia = ImageDiscover(cordsDictionary)
+ia = ImageDiscover(cordsDictionary, routePokemonDict)
 while True:
     ia.takeScreenshot(section_name='Route')
     ia.screenshotAnalyze('routeImage.png')
