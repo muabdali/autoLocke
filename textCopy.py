@@ -93,11 +93,11 @@ class ImageDiscover:
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
                 if gotchaOrNot == 'Gotcha ':
-                    print(f"Caught {fuzz_pokemonName} in ")
+                    print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                 else:
-                    print("not caught")
+                    return
             else:
-                print("not currently on battle screen")
+                return
 
             
             
@@ -119,6 +119,8 @@ ia = ImageDiscover(cordsDictionary, routePokemonDict)
 while True:
     ia.takeScreenshot(section_name='Route')
     ia.screenshotAnalyze('routeImage.png')
+    ia.takeScreenshot('Caught')
+    ia.screenshotAnalyze('CaughtImage.png')    
     time.sleep(0.5)
 
 
