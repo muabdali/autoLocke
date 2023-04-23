@@ -53,17 +53,20 @@ class ImageDiscover:
         self.dict = cordsDictionary
         self.oldtext = ''
         self.currentPokemon = ''
+
+
     def takeScreenshot(self, section_name):
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         screenshot.save(f'{section_name}Image.png')
+
+
     def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):
         self.dict[CurrentRoute] = CaughtPokemon
         print(self.dict[CurrentRoute])
 
     def screenshotAnalyze(self, requestedImage):
-
         imageGiven = Image.open(requestedImage)
         text = pytesseract.image_to_string(imageGiven)
         if requestedImage == 'routeImage.png':
