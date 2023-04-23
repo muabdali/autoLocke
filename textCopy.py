@@ -14,7 +14,8 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
-    'Pokemon':[300, 110, 450, 121]
+    'Pokemon':[300, 110, 450, 121],
+    'Caught':[270, 800, 380, 207]
 }
 
 routePokemonDict = {
@@ -53,6 +54,7 @@ class ImageDiscover:
         self.dict = cordsDictionary
         self.oldtext = ''
         self.currentPokemon = ''
+        self.currentRoute = ''
 
 
     def takeScreenshot(self, section_name):
@@ -66,7 +68,9 @@ class ImageDiscover:
         self.dict[CurrentRoute] = CaughtPokemon
         print(self.dict[CurrentRoute])
 
+
     def screenshotAnalyze(self, requestedImage):
+        ia = fuzzChecker
         imageGiven = Image.open(requestedImage)
         text = pytesseract.image_to_string(imageGiven)
         if requestedImage == 'routeImage.png':
@@ -74,26 +78,31 @@ class ImageDiscover:
             print(text)
             if text in routePokemonDict:
                 print("in dict")
+                self.currentRoute = text
         elif requestedImage == 'PokemonImage.png':
             print('pokemon')
             if text in 'NatDexPokemonG3.txt':
                 print('existing pokemon')
+        elif requestedImage == 'CaughtImage.png':
+            print(text)
+            if "Gotcha" in text:
+                print("if caught")
+                gotchaOrNot, pokemonName = text.split("|")
+                fuzz_pokemonName = ia.checkList('NatDexPokemonG3.txt', pokemonName)
+                print(gotchaOrNot, pokemonName)
+                print(fuzz_pokemonName)
+                if gotchaOrNot == 'Gotcha ':
+                    print(f"Caught {fuzz_pokemonName} in ")
+                else:
+                    print("not caught")
+            else:
+                print("not currently on battle screen")
 
-        """
-        if self.oldtext != text:
-            #print(text)
-            self.oldtext = text
-            
-            # fuzzChecker checks if the scanned text exists in the NatDexPokemonG3.txt, which is the txt file with ALL the pokemon names.
-            best_match = fuzzChecker.checkList('NatDexPokemonG3.txt', text)
-            return best_match
-        """
             
             
 
     def encounterDetect(self, section_name):
         self.takeScreenshot(section_name)
-
 
 
 
@@ -105,15 +114,18 @@ class ImageDiscover:
             self.screenshotAnalyze(requestedImage2)
             time.sleep(0.1)
 
-
-
-
-
 ia = ImageDiscover(cordsDictionary)
-ia.takeAnalyzeLoop(requestedImage='routeImage.png', section_name='Route', requestedImage2='PokemonImage.png',section_name2='Pokemon')
+while True:
+    ia.takeScreenshot(section_name='Route')
+    ia.screenshotAnalyze('routeImage.png')
+    time.sleep(0.5)
+
+
+    
 
 
 """
-ib = ImageAnalyze(cordsDictionary)
-ib.screenshotText('routeImage.png')
+ia = ImageDiscover(cordsDictionary)
+ia.takeScreenshot('Caught')
+ia.screenshotAnalyze('CaughtImage.png')
 """
