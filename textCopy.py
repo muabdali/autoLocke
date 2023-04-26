@@ -88,7 +88,7 @@ class ImageDiscover:
             print(text)
             if "Gotcha" in text:
                 print("if caught")
-                gotchaOrNot, pokemonName = text.split("|")
+                gotchaOrNot, pokemonName = text.split("!\n")
                 fuzz_pokemonName = ia.checkList('NatDexPokemonG3.txt', pokemonName)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
@@ -121,7 +121,7 @@ while True:
     ia.screenshotAnalyze('routeImage.png')
     ia.takeScreenshot('Caught')
     ia.screenshotAnalyze('CaughtImage.png')    
-    time.sleep(0.5)
+    time.sleep(0.2)
 
 
     
