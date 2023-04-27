@@ -3,6 +3,7 @@ import pytesseract
 from PIL import Image
 import time
 from fuzzyCheck import fuzzChecker
+from pytessGrayscaletest import *
 
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
@@ -71,8 +72,8 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage):
         ia = fuzzChecker
-        imageGiven = Image.open(requestedImage)
-        text = pytesseract.image_to_string(imageGiven)
+        imageGivenq = Image.open(requestedImage)
+        text = imageEnhancer.enhanceFunction(imageGivenq)
         if requestedImage == 'routeImage.png':
             print("route")
             print(text)
@@ -117,11 +118,7 @@ class ImageDiscover:
 
 ia = ImageDiscover(cordsDictionary, routePokemonDict)
 while True:
-    ia.takeScreenshot(section_name='Route')
     ia.screenshotAnalyze('routeImage.png')
-    ia.takeScreenshot('Caught')
-    ia.screenshotAnalyze('CaughtImage.png')    
-    time.sleep(0.2)
 
 
     
