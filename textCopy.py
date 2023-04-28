@@ -46,7 +46,8 @@ routePokemonDict = {
     'ROUTE 8': None,
     'ROUTE 7': None,
     'CELADON CITY': None,
-    'SAFFRON CITY': None
+    'SAFFRON CITY': None,
+    'ROUTE 16': None
 
 }
 
