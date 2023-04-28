@@ -1,6 +1,6 @@
 import pyautogui
 import pytesseract
-from PIL import Image
+from PIL import ImageEnhance, Image
 import time
 from fuzzyCheck import fuzzChecker
 from pytessGrayscaletest import *
@@ -13,6 +13,7 @@ x, y, width, height = 242, 47, 745, 121
 #screenshot.save('screenshot.png')
 
 # Load the image file and extract text from it
+
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
@@ -72,8 +73,7 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage):
         ia = fuzzChecker
-        imageGivenq = Image.open(requestedImage)
-        text = imageEnhancer.enhanceFunction(imageGivenq)
+        text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'routeImage.png':
             print("route")
             print(text)
@@ -117,8 +117,7 @@ class ImageDiscover:
             time.sleep(0.1)
 
 ia = ImageDiscover(cordsDictionary, routePokemonDict)
-while True:
-    ia.screenshotAnalyze('routeImage.png')
+ia.screenshotAnalyze('routeImage.png')
 
 
     
