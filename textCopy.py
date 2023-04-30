@@ -47,7 +47,8 @@ routePokemonDict = {
     'ROUTE 7': None,
     'CELADON CITY': None,
     'SAFFRON CITY': None,
-    'ROUTE 16': None
+    'ROUTE 16': None,
+    'ONE ISLAND':None
 
 }
 
@@ -99,6 +100,8 @@ class ImageDiscover:
                 print(fuzz_pokemonName)
                 if gotchaOrNot == 'Gotcha ':
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
+                    self.routeDictionary[self.currentRoute] = fuzz_pokemonName
+                    print(self.routeDictionary[self.currentRoute])
                 else:
                     return
             else:
@@ -122,6 +125,8 @@ class ImageDiscover:
 
 ia = ImageDiscover(cordsDictionary, routePokemonDict)
 while True:
+    ia.takeScreenshot('Route')
+    ia.screenshotAnalyze('routeImage.png')
     ia.takeScreenshot('Caught')
     ia.screenshotAnalyze('CaughtImage.png')
 
