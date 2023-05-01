@@ -4,6 +4,7 @@ from PIL import ImageEnhance, Image
 import time
 from fuzzyCheck import fuzzChecker
 from pytessGrayscaletest import *
+import json
 
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
@@ -48,7 +49,18 @@ routePokemonDict = {
     'CELADON CITY': None,
     'SAFFRON CITY': None,
     'ROUTE 16': None,
-    'ONE ISLAND':None
+    'ONE ISLAND':None,
+    'TWO ISLAND':None,
+    'THREE ISLAND':None,
+    'BERRY FOREST':None,
+    'BOND BRIDGE':None,
+    'MOUNT EMBER':None,
+    'ROUTE 18':None,
+    'ROUTE 20':None,
+    'KINDLE ROAD':None,
+    'ROUTE 18':None,
+    'SAFARI ZONE':None,
+    'ROUTE 15':None
 
 }
 
@@ -102,6 +114,9 @@ class ImageDiscover:
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     self.routeDictionary[self.currentRoute] = fuzz_pokemonName
                     print(self.routeDictionary[self.currentRoute])
+                    json_string = json.dumps(self.routeDictionary)
+
+
                 else:
                     return
             else:
@@ -129,6 +144,7 @@ while True:
     ia.screenshotAnalyze('routeImage.png')
     ia.takeScreenshot('Caught')
     ia.screenshotAnalyze('CaughtImage.png')
+
 
     
 
