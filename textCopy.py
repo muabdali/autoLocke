@@ -1,8 +1,11 @@
 import pyautogui
 import pytesseract
-from PIL import Image
+from PIL import ImageEnhance, Image
 import time
 from fuzzyCheck import fuzzChecker
+from pytessGrayscaletest import *
+import json
+
 
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
@@ -12,6 +15,7 @@ x, y, width, height = 242, 47, 745, 121
 #screenshot.save('screenshot.png')
 
 # Load the image file and extract text from it
+
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
@@ -33,7 +37,7 @@ routePokemonDict = {
     'ROUTE 25': None,
     'ROUTE 5': None,
     'ROUTE 6': None,
-    'VERMILLION CITY': None,
+    'VERMILION CITY': None,
     'ROUTE 11': None,
     'DIGLETTS CAVE': None,
     'ROUTE 9': None,
@@ -44,7 +48,20 @@ routePokemonDict = {
     'ROUTE 8': None,
     'ROUTE 7': None,
     'CELADON CITY': None,
-    'SAFFRON CITY': None
+    'SAFFRON CITY': None,
+    'ROUTE 16': None,
+    'ONE ISLAND':None,
+    'TWO ISLAND':None,
+    'THREE ISLAND':None,
+    'BERRY FOREST':None,
+    'BOND BRIDGE':None,
+    'MOUNT EMBER':None,
+    'ROUTE 18':None,
+    'ROUTE 20':None,
+    'KINDLE ROAD':None,
+    'ROUTE 18':None,
+    'SAFARI ZONE':None,
+    'ROUTE 15':None
 
 }
 
@@ -71,15 +88,19 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage):
         ia = fuzzChecker
-        imageGiven = Image.open(requestedImage)
-        text = pytesseract.image_to_string(imageGiven)
+        text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'routeImage.png':
             print("route")
             print(text)
             stripText = text.strip()
-            if stripText in self.routeDictionary:
+            routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=76)
+            print(routeFuzz)
+            print(self.currentRoute + "CURRENT ROUTE SELF")
+            
+            if routeFuzz in self.routeDictionary:
                 print("in dict")
-                self.currentRoute = stripText
+                routeFuzzFinal = routeFuzz
+                self.currentRoute = routeFuzzFinal
         elif requestedImage == 'PokemonImage.png':
             print('pokemon')
             if text in 'NatDexPokemonG3.txt':
@@ -88,12 +109,21 @@ class ImageDiscover:
             print(text)
             if "Gotcha" in text:
                 print("if caught")
-                gotchaOrNot, pokemonName = text.split("!\n")
+                if "!" in text:
+                    gotchaOrNot, pokemonName = text.split("!\n")
+                elif "|\n" in text:
+                    gotchaOrNot, pokemonName = text.split("|\n")
                 fuzz_pokemonName = ia.checkList('NatDexPokemonG3.txt', pokemonName)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
                 if gotchaOrNot == 'Gotcha ':
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
+                    self.routeDictionary[self.currentRoute] = fuzz_pokemonName
+                    print(self.routeDictionary[self.currentRoute])
+                    json_string = json.dumps(self.routeDictionary)
+                    with open("save.json", "w") as f:
+                        f.write(json_string)
+
                 else:
                     return
             else:
@@ -117,11 +147,10 @@ class ImageDiscover:
 
 ia = ImageDiscover(cordsDictionary, routePokemonDict)
 while True:
-    ia.takeScreenshot(section_name='Route')
+    ia.takeScreenshot('Route')
     ia.screenshotAnalyze('routeImage.png')
     ia.takeScreenshot('Caught')
-    ia.screenshotAnalyze('CaughtImage.png')    
-    time.sleep(0.2)
+    ia.screenshotAnalyze('CaughtImage.png')
 
 
     

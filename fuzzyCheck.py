@@ -1,15 +1,12 @@
 from fuzzywuzzy import process
 
 class fuzzChecker:
-    @staticmethod  # Make the method static so it can be called without an instance of the class
-    def checkList(pokeList, nameToCheck):
+    @staticmethod
+    def checkList(pokeList, nameToCheck, minScore=0):
         with open(pokeList, 'r') as f:
             string_list = [line.strip() for line in f]
-        best_match = process.extractOne(nameToCheck, string_list)
-        return best_match  # Return the value of best_match
-
-    
-
-
-
-        
+        best_match, score = process.extractOne(nameToCheck, string_list)
+        if score < minScore:
+            return None
+        else:
+            return best_match  # Return only the best_match value
