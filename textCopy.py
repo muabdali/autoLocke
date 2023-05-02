@@ -6,6 +6,7 @@ from fuzzyCheck import fuzzChecker
 from pytessGrayscaletest import *
 import json
 
+
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
 
@@ -92,7 +93,7 @@ class ImageDiscover:
             print("route")
             print(text)
             stripText = text.strip()
-            routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=90)
+            routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=76)
             print(routeFuzz)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             

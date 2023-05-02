@@ -9,4 +9,3 @@ class imageEnhancer:
         image = ImageEnhance.Contrast(image).enhance(2.0)
         text = pytesseract.image_to_string(image)
         return text
-        
