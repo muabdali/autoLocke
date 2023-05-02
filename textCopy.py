@@ -36,7 +36,7 @@ routePokemonDict = {
     'ROUTE 25': None,
     'ROUTE 5': None,
     'ROUTE 6': None,
-    'VERMILLION CITY': None,
+    'VERMILION CITY': None,
     'ROUTE 11': None,
     'DIGLETTS CAVE': None,
     'ROUTE 9': None,
@@ -92,9 +92,14 @@ class ImageDiscover:
             print("route")
             print(text)
             stripText = text.strip()
-            if stripText in self.routeDictionary:
+            routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=90)
+            print(routeFuzz)
+            print(self.currentRoute + "CURRENT ROUTE SELF")
+            
+            if routeFuzz in self.routeDictionary:
                 print("in dict")
-                self.currentRoute = stripText
+                routeFuzzFinal = routeFuzz
+                self.currentRoute = routeFuzzFinal
         elif requestedImage == 'PokemonImage.png':
             print('pokemon')
             if text in 'NatDexPokemonG3.txt':
