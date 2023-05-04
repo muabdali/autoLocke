@@ -1,29 +1,28 @@
-from pokedex import pokedex
-
-pokedex = pokedex.Pokedex()
-
-pokemon = pokedex.get_pokemon_by_name('pikachu')
-pokemon_types = [t for t in pokemon[0]['types'] if t == 'Electric']
-print(pokemon_types)
+import asyncio
+import aiopoke
 
 
-class weaknessGrab():
+"""
+class weakResGrab():
     def __init__(self):
         self.pokedex = pokedex.Pokedex()
         self.weaknessDict = {
-            'Electric':None,
-            'Poison':None,
-            'Ground':None,
+            'Normal':None,
             'Fire':None,
             'Water':None,
+            'Electric':None,
             'Grass':None,
-            'Rock':None,
+            'Ice':None,
+            'Fight':None,
+            'Poison':None,
+            'Ground':None,
             'Flying':None,
+            'Psychic':None,
+            'Bug':None,
+            'Rock':None,
             'Ghost':None,
-            'Poison':None,
-            'Poison':None,
-            'Poison':None,
-            'Poison':None,
-
-
+            'Dragon':None,
+            'Dark':None,
+            'Steel':None,
         }
+"""
