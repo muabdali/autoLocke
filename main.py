@@ -59,9 +59,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    a.takeScreenshot(section_name='Route')
-    time.sleep(0.01)
-    print("A")
     sys.exit(app.exec_())
 
     # Call the takeScreenshot function
