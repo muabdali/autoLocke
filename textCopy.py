@@ -99,40 +99,4 @@ class ImageDiscover:
             else:
                 return
 
-<<<<<<< Updated upstream
-            
-            
-
-    def encounterDetect(self, section_name):
-        self.takeScreenshot(section_name)
-
-
-
-    def takeAnalyzeLoop(self, requestedImage, section_name, requestedImage2, section_name2):
-        while True:
-            self.takeScreenshot(section_name)
-            self.screenshotAnalyze(requestedImage)
-            self.takeScreenshot(section_name2)
-            self.screenshotAnalyze(requestedImage2)
-            time.sleep(0.1)
-
-ia = ImageDiscover(cordsDictionary, routePokemonDict)
-while True:
-    ia.takeScreenshot(section_name='Route')
-    ia.screenshotAnalyze('routeImage.png')
-    ia.takeScreenshot('Caught')
-    ia.screenshotAnalyze('CaughtImage.png')    
-    time.sleep(0.2)
-
-
-    
-
-
-"""
-ia = ImageDiscover(cordsDictionary)
-ia.takeScreenshot('Caught')
-ia.screenshotAnalyze('CaughtImage.png')
-"""
-=======
                   
->>>>>>> Stashed changes
