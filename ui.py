@@ -73,7 +73,8 @@ class MainWindow(QMainWindow):
         self.load_json_file()
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenShotloop)
-        self.timer.start(100)
+        self.timer.timeout.connect(self.load_json_file)
+        self.timer.start(300)
 
     def load_json_file(self):
         with open('data.json', 'r') as f:
@@ -100,9 +101,11 @@ class MainWindow(QMainWindow):
     def screenShotloop(self):
         ab.takeScreenshot('Route')
         print("taken1")
+        ab.screenshotAnalyze('routeImage.png')
         ab.takeScreenshot('Caught')
+        ab.screenshotAnalyze('CaughtImage.png')
         print('taken2')
-        
+
 
 
 
