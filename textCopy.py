@@ -99,6 +99,7 @@ class ImageDiscover:
             else:
                 return
 
+<<<<<<< Updated upstream
             
             
 
@@ -132,3 +133,6 @@ ia = ImageDiscover(cordsDictionary)
 ia.takeScreenshot('Caught')
 ia.screenshotAnalyze('CaughtImage.png')
 """
+=======
+                  
+>>>>>>> Stashed changes
