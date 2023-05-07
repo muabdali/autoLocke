@@ -101,10 +101,6 @@ class ImageDiscover:
                 print("in dict")
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
-        elif requestedImage == 'PokemonImage.png':
-            print('pokemon')
-            if text in 'NatDexPokemonG3.txt':
-                print('existing pokemon')
         elif requestedImage == 'CaughtImage.png':
             print(text)
             if "Gotcha" in text:
@@ -129,4 +125,37 @@ class ImageDiscover:
             else:
                 return
 
+            
+    #TO REMOVE        
+"""
+    def encounterDetect(self, section_name):
+        self.takeScreenshot(section_name)
+
+
+
+    def takeAnalyzeLoop(self, requestedImage, section_name, requestedImage2, section_name2):
+        while True:
+            self.takeScreenshot(section_name)
+            self.screenshotAnalyze(requestedImage)
+            self.takeScreenshot(section_name2)
+            self.screenshotAnalyze(requestedImage2)
+            time.sleep(0.1)
+
+ia = ImageDiscover(cordsDictionary, routePokemonDict)
+while True:
+    ia.takeScreenshot('Route')
+    ia.screenshotAnalyze('routeImage.png')
+    ia.takeScreenshot('Caught')
+    ia.screenshotAnalyze('CaughtImage.png')
+
+
+    
+
+
+
+ia = ImageDiscover(cordsDictionary)
+ia.takeScreenshot('Caught')
+ia.screenshotAnalyze('CaughtImage.png')
+
+"""
                   
