@@ -57,7 +57,7 @@ ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Table to JSON')
+        self.setWindowTitle('autoLocke')
         self.table = QTableWidget()
         self.load_button = QPushButton('Load')
         self.save_button = QPushButton('Save')
@@ -99,7 +99,10 @@ class MainWindow(QMainWindow):
 
     def screenShotloop(self):
         ab.takeScreenshot('Route')
-        print("taken")
+        print("taken1")
+        ab.takeScreenshot('Caught')
+        print('taken2')
+        
 
 
 
