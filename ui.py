@@ -95,7 +95,7 @@ class MainWindow(QMainWindow):
             location = location_item.text()
             pokemon = pokemon_item.text()
             self.data[location] = pokemon
-        with open('data.json', 'w') as f:
+        with open('save.json', 'w') as f:
             json.dump(self.data, f, indent=4)
 
     def screenShotloop(self):
