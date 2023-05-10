@@ -114,7 +114,7 @@ class ImageDiscover:
                     self.routeDictionary[self.currentRoute] = fuzz_pokemonName
                     print(self.routeDictionary[self.currentRoute])
                     json_string = json.dumps(self.routeDictionary)
-                    with open("save.json", "w") as f:
+                    with open("data.json", "w") as f:
                         f.write(json_string)
 
                 else:
