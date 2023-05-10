@@ -1,9 +1,8 @@
 import json
+import threading
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QPushButton, QVBoxLayout, QWidget
 from textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QImage
-import numpy as np
 
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
@@ -74,15 +73,9 @@ class MainWindow(QMainWindow):
         self.data = {}
         self.load_json_file()
         self.timer = QTimer()
-        self.timer.timeout.connect(self.screenShotloop)
+        self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.load_json_file)
         self.timer.start(300)
-        self.previous_route_image = None
-        self.previous_caught_image = None
-        
-
-
-        
 
     def load_json_file(self):
         with open('data.json', 'r') as f:
@@ -107,29 +100,30 @@ class MainWindow(QMainWindow):
             json.dump(self.data, f, indent=4)
 
     def screenShotloop(self):
-        # Capture the route image
         ab.takeScreenshot('Route')
-        current_route_image = QImage('routeImage.png')
-        
-        # Compare with the previous image
-        if self.previous_route_image is None or not np.array_equal(current_route_image.constBits(), self.previous_route_image.constBits()):
-            ab.screenshotAnalyze('routeImage.png')
-            self.previous_route_image = current_route_image
-            print("Route image analyzed.")
-        else:
-            print("Route image skipped.")
-        
-        # Capture the caught image
+        print("taken1")
+        ab.screenshotAnalyze('routeImage.png')
         ab.takeScreenshot('Caught')
-        current_caught_image = QImage('CaughtImage.png')
-        
-        # Compare with the previous image
-        if self.previous_caught_image is None or not np.array_equal(current_caught_image.constBits(), self.previous_caught_image.constBits()):
-            ab.screenshotAnalyze('CaughtImage.png')
-            self.previous_caught_image = current_caught_image
-            print("Caught image analyzed.")
-        else:
-            print("Caught image skipped.")
+        ab.screenshotAnalyze('CaughtImage.png')
+        print('taken2')
+
+
+    def screenshotLoop(self):
+        route_thread = threading.Thread(target=self.analyzeRoute)
+        caught_thread = threading.Thread(target=self.analyzeCaught)
+        route_thread.start()
+        caught_thread.start()
+
+    def analyzeRoute(self):
+        currentRouteSS = ab.takeScreenshot('Route')
+        currentRouteAN = ab.screenshotAnalyze('routeImage.png')
+        print(currentRouteAN)
+
+    def analyzeCaught(self):
+        pokemonCaught = ab.screenshotAnalyze('CaughtImage.png')
+        if pokemonCaught is not None:
+            self.data['Caught'] = pokemonCaught
+            self.load_json_file()
 
 
 
@@ -140,4 +134,3 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
     app.exec_()
-
