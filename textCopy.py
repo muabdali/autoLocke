@@ -90,6 +90,7 @@ class ImageDiscover:
         ia = fuzzChecker
         text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'routeImage.png':
+            text = imageEnhancer.enhanceFunction(requestedImage)
             stripText = text.strip()
             routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=76)
             print(routeFuzz)
@@ -100,6 +101,7 @@ class ImageDiscover:
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
         elif requestedImage == 'CaughtImage.png':
+            text = imageEnhancer.enhanceFunction(requestedImage)
             if "Gotcha" in text:
                 print("if caught")
                 if "!" in text:

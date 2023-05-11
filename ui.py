@@ -2,7 +2,7 @@ import json
 import threading
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QPushButton, QVBoxLayout, QWidget
 from textCopy import ImageDiscover
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.load_json_file)
         self.timer.start(300)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
     def load_json_file(self):
         with open('data.json', 'r') as f:
