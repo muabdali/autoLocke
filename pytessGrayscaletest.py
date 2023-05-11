@@ -7,5 +7,6 @@ class imageEnhancer:
         image = Image.open(imageToEnhance)
         image = image.convert('L')
         image = ImageEnhance.Contrast(image).enhance(2.0)
+        image.save('EnhanceImage.png')
         text = pytesseract.image_to_string(image)
         return text

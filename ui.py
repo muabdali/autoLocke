@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.load_json_file)
-        self.timer.start(300)
+        self.timer.start(150)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
     def load_json_file(self):
