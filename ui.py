@@ -1,8 +1,10 @@
 import json
 import threading
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import *
 from textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt
+from time import sleep
+
 
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
@@ -62,6 +64,7 @@ class MainWindow(QMainWindow):
         self.table = QTableWidget()
         self.load_button = QPushButton('Load')
         self.save_button = QPushButton('Save')
+        self.edit_button = QRadioButton('Edit')
         self.load_button.clicked.connect(self.load_json_file)
         self.save_button.clicked.connect(self.save_json_file)
         central_widget = QWidget()
@@ -69,6 +72,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.table)
         layout.addWidget(self.load_button)
         layout.addWidget(self.save_button)
+        layout.addWidget(self.edit_button)
+        self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
         self.data = {}
         self.load_json_file()
@@ -79,12 +84,15 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
     def load_json_file(self):
+        if self.edit_button.isChecked():
+            return
         with open('data.json', 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
         row = 0
+        print("JSONLOAD")
         for location, pokemon in self.data.items():
             self.table.setItem(row, 0, QTableWidgetItem(location))
             self.table.setItem(row, 1, QTableWidgetItem(pokemon))
@@ -99,15 +107,6 @@ class MainWindow(QMainWindow):
             self.data[location] = pokemon
         with open('data.json', 'w') as f:
             json.dump(self.data, f, indent=4)
-
-    def screenShotloop(self):
-        ab.takeScreenshot('Route')
-        print("taken1")
-        ab.screenshotAnalyze('routeImage.png')
-        ab.takeScreenshot('Caught')
-        ab.screenshotAnalyze('CaughtImage.png')
-        print('taken2')
-
 
     def screenshotLoop(self):
         route_thread = threading.Thread(target=self.analyzeRoute)
@@ -125,7 +124,6 @@ class MainWindow(QMainWindow):
         if pokemonCaught is not None:
             self.data['Caught'] = pokemonCaught
             self.load_json_file()
-
 
 
 
