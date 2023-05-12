@@ -1,2 +1,12 @@
-bottom right of route sign - 987, 168
-top right of route sign - 242,47
+current order of operations:
+
+screenshot top left
+analyze top left
+screenshot bottom left
+analyze bottom left
+
+new order
+
+screenshot whole screen
+cut into usable areas
+analyze both images seperately, on a different thread than the gui
