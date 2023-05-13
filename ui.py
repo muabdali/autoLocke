@@ -1,8 +1,10 @@
 import json
 import threading
 from PyQt5.QtWidgets import *
+from PyQt5 import QtGui
+from PyQt5 import QtCore
 from textCopy import ImageDiscover
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
 
@@ -64,6 +66,7 @@ class TipsDialog(QDialog):
         super().__init__()
         self.setWindowTitle('Tips')
         layout = QVBoxLayout()
+        self.setWindowIcon(QtGui.QIcon('logo.png'))
 
 
         # Create a QHBoxLayout layout for the top right side of the dialog
@@ -102,7 +105,9 @@ class MainWindow(QMainWindow):
         self.table = QTableWidget()
         self.load_button = QPushButton('Load')
         self.save_button = QPushButton('Save')
+        self.clear_button = QPushButton('Clear')
         self.edit_button = QRadioButton('Edit')
+        self.clear_button.clicked.connect(self.delete_all_values)
         self.load_button.clicked.connect(self.load_json_file)
         self.save_button.clicked.connect(self.save_json_file)
         central_widget = QWidget()
@@ -110,6 +115,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.table)
         layout.addWidget(self.load_button)
         layout.addWidget(self.save_button)
+        layout.addWidget(self.clear_button)
         layout.addWidget(self.edit_button)
         self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
@@ -120,6 +126,8 @@ class MainWindow(QMainWindow):
         self.timer.timeout.connect(self.load_json_file)
         self.timer.start(150)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        self.setWindowIcon(QtGui.QIcon('logo.png'))
+
 
     def load_json_file(self):
         if self.edit_button.isChecked():
@@ -145,6 +153,20 @@ class MainWindow(QMainWindow):
             self.data[location] = pokemon
         with open('data.json', 'w') as f:
             json.dump(self.data, f, indent=4)
+
+    def delete_all_values(self):
+        self.edit_button.setChecked(True)
+        with open('data.json', 'r') as f:
+            self.data = json.load(f)
+        self.table.setRowCount(len(self.data))
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
+        row = 0
+        for location, pokemon in self.data.items():
+            self.table.setItem(row, 0, QTableWidgetItem(location))
+            self.table.setItem(row, 1, QTableWidgetItem(None))   
+            row += 1
+            self.save_json_file
 
     def screenshotLoop(self):
         route_thread = threading.Thread(target=self.analyzeRoute)
