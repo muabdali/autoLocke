@@ -3,7 +3,7 @@ import threading
 from PyQt5.QtWidgets import *
 from textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QMovie
+from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
 
 
@@ -65,6 +65,7 @@ class TipsDialog(QDialog):
         self.setWindowTitle('Tips')
         layout = QVBoxLayout()
 
+
         # Create a QHBoxLayout layout for the top right side of the dialog
         top_layout = QHBoxLayout()
 
@@ -84,6 +85,7 @@ class TipsDialog(QDialog):
 
         # Add the tips label and next button to the main QVBoxLayout layout
         label2 = QLabel('Here are some tips:\n\nTip 1 - Make sure to keep the tracker anchored to the TOP RIGHT of the Emulator.\nTip 2 - So far, the tracker only works for Pokemon Fire Red and Leaf Green\nTip 3 - If you have any issues or suggestions, please open a discussion on https://github.com/muabdali/autoLocke')
+        label2.setFont(QFont("Verdana"))
         layout.addWidget(label2)
         next_button = QPushButton('Next')
         next_button.clicked.connect(self.close)  # Close the dialog

@@ -9,4 +9,4 @@ class fuzzChecker:
         if score < minScore:
             return None
         else:
-            return best_match  # Return only the best_match value
+            return best_match

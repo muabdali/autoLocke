@@ -7,18 +7,18 @@ QWidget {
     background-color: "#333";
     color: "#eee";
     padding: 0px;
-    font-family: Helvetica;
+    font: Helvetica;
 }
 QTableView {
     border: 1px solid "#222";
     padding: 0px;
     font-size: 14px;
     alternate-background-color: "#424242";
-    font-family: Helvetica;
+    font: Helvetica;
 }
 QTableView::item:selected {
     background-color: "#3388ff";
-    font-family: Helvetica;
+    font: Helvetica;
 }
 QTableView QTableCornerButton::section {
     background-color: "#292929";
@@ -41,5 +41,5 @@ QPushButton {
     background-color: "#292929";
     min-width: 8px;
     min-height: 8px;
-    font-family: Helvetica;
+    font: Arial;
 }
