@@ -1,38 +1,45 @@
 QMainWindow {
     background-color: "#222";
-    color: "#eee"
+    color: "#eee";
+    font-family: Helvetica;
 }
 QWidget {
     background-color: "#333";
     color: "#eee";
-    padding: 0px
+    padding: 0px;
+    font-family: Helvetica;
 }
 QTableView {
     border: 1px solid "#222";
     padding: 0px;
-    font-family: "Segoe UI";
     font-size: 14px;
-    alternate-background-color: "#424242"
+    alternate-background-color: "#424242";
+    font-family: Helvetica;
 }
 QTableView::item:selected {
-    background-color: "#3388ff"
+    background-color: "#3388ff";
+    font-family: Helvetica;
 }
 QTableView QTableCornerButton::section {
     background-color: "#292929";
     border: 1px;
-    padding: 0px
+    padding: 0px;
+    font-family: Helvetica;
 }
 QHeaderView, QHeaderView::section {
     background-color: "#292929";
     color: "#eee";
     font-size: 15px;
     border: 1px;
-    padding: 0px
+    padding: 0px;
+    font-family: Helvetica;
 }
 QPushButton {
     border: 2px solid #8f8f91;
     border-radius: 6px;
-    background-color: "#292929"
-    min-width: 80px;
-    min-height: 80px
+    border-style: hidden;
+    background-color: "#292929";
+    min-width: 8px;
+    min-height: 8px;
+    font-family: Helvetica;
 }

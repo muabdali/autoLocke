@@ -3,6 +3,7 @@ import threading
 from PyQt5.QtWidgets import *
 from textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtGui import QMovie
 from time import sleep
 
 
@@ -56,6 +57,41 @@ routePokemonDict = {
 }
 
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
+
+
+class TipsDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Tips')
+        layout = QVBoxLayout()
+
+        # Create a QHBoxLayout layout for the top right side of the dialog
+        top_layout = QHBoxLayout()
+
+        # Create a QLabel widget and set the QMovie as its pixmap
+        label = QLabel('Welcome to the app!')
+        top_layout.addWidget(label)
+
+        gif_label = QLabel()
+        gif_movie = QMovie('479.gif')
+        gif_label.setMovie(gif_movie)
+        gif_movie.start()
+        gif_label.setAlignment(Qt.AlignCenter)
+
+        # Set the stylesheet of the parent widget to position the GIF label absolutely
+        self.setLayout(layout)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+
+        # Add the tips label and next button to the main QVBoxLayout layout
+        label2 = QLabel('Here are some tips:\n\nTip 1 - Make sure to keep the tracker anchored to the TOP RIGHT of the Emulator.\nTip 2 - So far, the tracker only works for Pokemon Fire Red and Leaf Green\nTip 3 - If you have any issues or suggestions, please open a discussion on https://github.com/muabdali/autoLocke')
+        layout.addWidget(label2)
+        next_button = QPushButton('Next')
+        next_button.clicked.connect(self.close)  # Close the dialog
+        layout.addWidget(next_button)
+
+        # Add the GIF label to the main QVBoxLayout layout
+        layout.addWidget(gif_label)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -120,6 +156,7 @@ class MainWindow(QMainWindow):
         print(currentRouteAN)
 
     def analyzeCaught(self):
+        pokemonCaughSS = ab.takeScreenshot('Caught')
         pokemonCaught = ab.screenshotAnalyze('CaughtImage.png')
         if pokemonCaught is not None:
             self.data['Caught'] = pokemonCaught
@@ -133,6 +170,8 @@ if __name__ == '__main__':
     with open('style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
+    tips_dialog = TipsDialog()
+    tips_dialog.exec()
     window = MainWindow()
     window.show()
     app.exec_()
