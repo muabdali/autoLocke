@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication
-from ui import MainWindow
+from ui import MainWindow, TipsDialog
 from textCopy import ImageDiscover
 import sys
 import time
@@ -56,9 +56,12 @@ routePokemonDict = {
 a = ImageDiscover(cordsDictionary=cordsDictionary, routeDict=routePokemonDict)
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication([])
+    with open('style.qss', 'r') as f:
+        style = f.read()
+    app.setStyleSheet(style)
+    tips_dialog = TipsDialog()
+    tips_dialog.exec()
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
-
-    # Call the takeScreenshot function
+    app.exec_()
