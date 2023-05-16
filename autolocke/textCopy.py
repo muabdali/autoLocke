@@ -2,8 +2,8 @@ import pyautogui
 import pytesseract
 from PIL import ImageEnhance, Image
 import time
-from fuzzyCheck import fuzzChecker
-from pytessGrayscaletest import *
+from autolocke.fuzzyCheck import fuzzChecker
+from autolocke.pytessGrayscaletest import *
 import json
 
 
@@ -24,10 +24,10 @@ cordsDictionary = {
 
 routePokemonDict = {
     "PALLET TOWN": "",
-    "ROUTE 1": "TEST",
-    "VIRIDIAN CITY": "TEST",
-    "ROUTE 22": "Machamp",
-    "ROUTE 2": "TEST",
+    "ROUTE 1": "",
+    "VIRIDIAN CITY": "",
+    "ROUTE 22": "",
+    "ROUTE 2": "",
     "VIRIDIAN FOREST": "",
     "ROUTE 3": "",
     "ROUTE 4": "",
@@ -40,8 +40,8 @@ routePokemonDict = {
     "VERMILION CITY": "",
     "ROUTE 11": "",
     "DIGLETTS CAVE": "",
-    "ROUTE 9": "Moltres",
-    "ROUTE 10": "Cleffa",
+    "ROUTE 9": "",
+    "ROUTE 10": "",
     "ROCK TUNNEL": "",
     "POKÉMON TOWER": "",
     "ROUTE 12": "",
@@ -103,7 +103,7 @@ class ImageDiscover:
         text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'routeImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList('fireredroutes.txt',stripText, minScore=76)
+            routeFuzz = ia.checkList('autolocke/Data/fireredroutes.txt',stripText, minScore=76)
             print(routeFuzz)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
@@ -118,7 +118,7 @@ class ImageDiscover:
                     gotchaOrNot, pokemonName = text.split("!\n")
                 elif "|\n" in text:
                     gotchaOrNot, pokemonName = text.split("|\n")
-                fuzz_pokemonName = ia.checkList('NatDexPokemonG3.txt', pokemonName)
+                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
                 if gotchaOrNot == 'Gotcha ':
@@ -126,7 +126,7 @@ class ImageDiscover:
                     self.routeDictionary[self.currentRoute] = fuzz_pokemonName
                     print(self.routeDictionary[self.currentRoute])
                     json_string = json.dumps(self.routeDictionary)
-                    with open("data.json", "w") as f:
+                    with open("autolocke\Data\data.json", "w") as f:
                         f.write(json_string)
 
                 else:

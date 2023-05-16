@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication
-from ui import MainWindow, TipsDialog
-from textCopy import ImageDiscover
+from autolocke.ui import MainWindow, TipsDialog
+from autolocke.textCopy import ImageDiscover
 import sys
 import time
 
@@ -57,7 +57,7 @@ a = ImageDiscover(cordsDictionary=cordsDictionary, routeDict=routePokemonDict)
 
 if __name__ == '__main__':
     app = QApplication([])
-    with open('style.qss', 'r') as f:
+    with open('autolocke\style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
     tips_dialog = TipsDialog()

@@ -3,7 +3,7 @@ import threading
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
 from PyQt5 import QtCore
-from textCopy import ImageDiscover
+from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
@@ -15,48 +15,9 @@ cordsDictionary = {
     'Caught':[270, 800, 380, 207]
 }
 
-routePokemonDict = {
-    'PALLET TOWN': None,
-    'ROUTE 1': None,
-    'VIRIDIAN CITY': None,
-    'ROUTE 22': None,
-    'ROUTE 2': None,
-    'VIRIDIAN FOREST': None,
-    'ROUTE 3': None,
-    'ROUTE 4': None,
-    'MT. MOON': None,
-    'CERULEAN CITY': None,
-    'ROUTE 24': None,
-    'ROUTE 25': None,
-    'ROUTE 5': None,
-    'ROUTE 6': None,
-    'VERMILION CITY': None,
-    'ROUTE 11': None,
-    'DIGLETTS CAVE': None,
-    'ROUTE 9': None,
-    'ROUTE 10': None,
-    'ROCK TUNNEL': None,
-    'POKÉMON TOWER': None,
-    'ROUTE 12': None,
-    'ROUTE 8': None,
-    'ROUTE 7': None,
-    'CELADON CITY': None,
-    'SAFFRON CITY': None,
-    'ROUTE 16': None,
-    'ONE ISLAND':None,
-    'TWO ISLAND':None,
-    'THREE ISLAND':None,
-    'BERRY FOREST':None,
-    'BOND BRIDGE':None,
-    'MOUNT EMBER':None,
-    'ROUTE 18':None,
-    'ROUTE 20':None,
-    'KINDLE ROAD':None,
-    'ROUTE 18':None,
-    'SAFARI ZONE':None,
-    'ROUTE 15':None
 
-}
+with open('autolocke\Data\data.json') as json_filePoke:
+    routePokemonDict = json.load(json_filePoke)
 
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 
@@ -66,7 +27,7 @@ class TipsDialog(QDialog):
         super().__init__()
         self.setWindowTitle('Tips')
         layout = QVBoxLayout()
-        self.setWindowIcon(QtGui.QIcon('logo.png'))
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
 
 
         # Create a QHBoxLayout layout for the top right side of the dialog
@@ -77,7 +38,7 @@ class TipsDialog(QDialog):
         top_layout.addWidget(label)
 
         gif_label = QLabel()
-        gif_movie = QMovie('479.gif')
+        gif_movie = QMovie('autolocke/UI/479.gif')
         gif_label.setMovie(gif_movie)
         gif_movie.start()
         gif_label.setAlignment(Qt.AlignCenter)
@@ -126,13 +87,13 @@ class MainWindow(QMainWindow):
         self.timer.timeout.connect(self.load_json_file)
         self.timer.start(150)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
-        self.setWindowIcon(QtGui.QIcon('logo.png'))
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
 
 
     def load_json_file(self):
         if self.edit_button.isChecked():
             return
-        with open('data.json', 'r') as f:
+        with open('autolocke\Data\data.json', 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
         self.table.setColumnCount(2)
@@ -151,12 +112,12 @@ class MainWindow(QMainWindow):
             location = location_item.text()
             pokemon = pokemon_item.text()
             self.data[location] = pokemon
-        with open('data.json', 'w') as f:
+        with open('autolocke\Data\data.json', 'w') as f:
             json.dump(self.data, f, indent=4)
 
     def delete_all_values(self):
         self.edit_button.setChecked(True)
-        with open('data.json', 'r') as f:
+        with open('autolocke\Data\data.json', 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
         self.table.setColumnCount(2)
