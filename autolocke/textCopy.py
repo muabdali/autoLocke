@@ -50,7 +50,7 @@ class ImageDiscover:
     def screenshotAnalyze(self, requestedImage):
         ia = fuzzChecker
         text = imageEnhancer.enhanceFunction(requestedImage)
-        if requestedImage == 'routeImage.png':
+        if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
             routeFuzz = ia.checkList('autolocke/Data/fireredroutes.txt',stripText, minScore=76)
             print(routeFuzz)
@@ -60,7 +60,7 @@ class ImageDiscover:
                 print("in dict")
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
-        elif requestedImage == 'CaughtImage.png':
+        elif requestedImage == 'autolocke\Images\CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
                 if "!" in text:

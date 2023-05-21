@@ -7,7 +7,7 @@ from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
-
+import os
 
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
@@ -135,14 +135,17 @@ class MainWindow(QMainWindow):
         route_thread.start()
         caught_thread.start()
 
+
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route')
-        currentRouteAN = ab.screenshotAnalyze('routeImage.png')
+        imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
+        currentRouteAN = ab.screenshotAnalyze(imagePath)
         print(currentRouteAN)
 
     def analyzeCaught(self):
         pokemonCaughSS = ab.takeScreenshot('Caught')
-        pokemonCaught = ab.screenshotAnalyze('CaughtImage.png')
+        imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
+        pokemonCaught = ab.screenshotAnalyze(imagePath)
         if pokemonCaught is not None:
             self.data['Caught'] = pokemonCaught
             self.load_json_file()
