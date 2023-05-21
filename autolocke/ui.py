@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.load_json_file)
-        self.timer.start(150)
+        self.timer.start(250)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
 

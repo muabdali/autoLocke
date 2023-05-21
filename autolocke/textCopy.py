@@ -5,7 +5,7 @@ import time
 from autolocke.fuzzyCheck import fuzzChecker
 from autolocke.pytessGrayscaletest import *
 import json
-
+import os
 
 # Define the region of the screen to capture
 x, y, width, height = 242, 47, 745, 121
@@ -22,61 +22,6 @@ cordsDictionary = {
     'Caught':[270, 800, 380, 207]
 }
 
-routePokemonDict = {
-    "PALLET TOWN": "",
-    "ROUTE 1": "",
-    "VIRIDIAN CITY": "",
-    "ROUTE 22": "",
-    "ROUTE 2": "",
-    "VIRIDIAN FOREST": "",
-    "ROUTE 3": "",
-    "ROUTE 4": "",
-    "MT. MOON": "",
-    "CERULEAN CITY": "",
-    "ROUTE 24": "",
-    "ROUTE 25": "",
-    "ROUTE 5": "",
-    "ROUTE 6": "",
-    "VERMILION CITY": "",
-    "ROUTE 11": "",
-    "DIGLETTS CAVE": "",
-    "ROUTE 9": "",
-    "ROUTE 10": "",
-    "ROCK TUNNEL": "",
-    "POKÉMON TOWER": "",
-    "ROUTE 12": "",
-    "ROUTE 8": "",
-    "ROUTE 7": "",
-    "CELADON CITY": "",
-    "SAFFRON CITY": "",
-    "ROUTE 16": "",
-    "ROUTE 17": "",
-    "ROUTE 18": "",
-    "FUSCIA CITY": "",
-    "SAFARI ZONE": "",
-    "ROUTE 15": "",
-    "ROUTE 14": "",
-    "ROUTE 13": "",
-    "POWER PLANT": "",
-    "ROUTE 19": "",
-    "ROUTE 20": "",
-    "SEAFOAM ISLANDS": "",
-    "CINNABAR ISLAND": "",
-    "POKEMON MANSION": "",
-    "ONE ISLAND": "",
-    "TWO ISLAND": "",
-    "THREE ISLAND": "",
-    "ROUTE 21": "",
-    "ROUTE 23": "",
-    "VICTORY ROAD": "",
-    "FOUR ISLAND": "",
-    "FIVE ISLAND": "",
-    "SIX ISLAND": "",
-    "SEVEN ISLAND": "",
-    "CERULEAN CAVE": "",
-    "EXTRA1": "",
-    "EXTRA2": ""
-}
 
 class ImageDiscover:
     def __init__(self, cordsDictionary, routeDict):
@@ -90,7 +35,11 @@ class ImageDiscover:
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
-        screenshot.save(f'{section_name}Image.png')
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+        images_directory = os.path.join(script_directory, "Images")
+        file_path = os.path.join(images_directory, f'{section_name}Image.png')
+        screenshot.save(file_path)
+
 
 
     def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):

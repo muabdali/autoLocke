@@ -11,6 +11,8 @@ cordsDictionary = {
     'Caught':[270, 800, 380, 207]
 }
 
+
+
 routePokemonDict = {
     'PALLET TOWN': None,
     'ROUTE 1': None,
