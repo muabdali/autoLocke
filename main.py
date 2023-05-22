@@ -57,6 +57,13 @@ routePokemonDict = {
 }
 a = ImageDiscover(cordsDictionary=cordsDictionary, routeDict=routePokemonDict)
 
+
+
+"""
+Main file for initializing the GUI (ui.py) and therefore the rest of the 
+functions.
+"""
+
 if __name__ == '__main__':
     app = QApplication([])
     with open('autolocke\style.qss', 'r') as f:
