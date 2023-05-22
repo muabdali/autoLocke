@@ -22,7 +22,7 @@ cordsDictionary = {
     'Caught':[270, 800, 380, 207]
 }
 
-
+#cordsDictionary removed from here, now only in file where ImageDiscover is called
 class ImageDiscover:
     def __init__(self, cordsDictionary, routeDict):
         self.dict = cordsDictionary
@@ -32,6 +32,7 @@ class ImageDiscover:
         self.routeDictionary = routeDict
 
     def takeScreenshot(self, section_name):
+        #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
@@ -84,4 +85,4 @@ class ImageDiscover:
                 return
 
             
-# NEED TO CHANGE WHICH JSON FILE GETS CAUGHT UPDATES LINE 117
+
