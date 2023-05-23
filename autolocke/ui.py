@@ -55,8 +55,15 @@ class TipsDialog(QDialog):
         next_button.clicked.connect(self.close)  # Close the dialog
         layout.addWidget(next_button)
 
+        selectLabel = QLabel('Select your game version')
+        top_layout.addWidget(selectLabel)
+        selectGameVersion = QComboBox()
+        top_layout.addWidget(selectGameVersion)
+
         # Add the GIF label to the main QVBoxLayout layout
         layout.addWidget(gif_label)
+
+
 
 
 class MainWindow(QMainWindow):
