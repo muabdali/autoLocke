@@ -34,8 +34,6 @@ class TipsDialog(QDialog):
         top_layout = QHBoxLayout()
 
         # Create a QLabel widget and set the QMovie as its pixmap
-        label = QLabel('Welcome to the app!')
-        top_layout.addWidget(label)
 
         gif_label = QLabel()
         gif_movie = QMovie('autolocke/UI/479.gif')
@@ -59,6 +57,8 @@ class TipsDialog(QDialog):
         top_layout.addWidget(selectLabel)
         selectGameVersion = QComboBox()
         top_layout.addWidget(selectGameVersion)
+        layout.addLayout(top_layout)
+        
 
         # Add the GIF label to the main QVBoxLayout layout
         layout.addWidget(gif_label)

@@ -54,7 +54,6 @@ class ImageDiscover:
         if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
             routeFuzz = ia.checkList('autolocke/Data/fireredroutes.txt',stripText, minScore=76)
-            print(routeFuzz)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
