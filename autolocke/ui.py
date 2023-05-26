@@ -95,22 +95,38 @@ class MainWindow(QMainWindow):
         self.timer.start(250)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
+        self.file_path = None
+
+    def reload_given_json(self):
+        if self.edit_button.isChecked():
+            return
+        with open(self.file_path, 'r') as f:
+            self.data = json.load(f)
+        self.table.setRowCount(len(self.data))
+        
+
 
 
     def load_json_file(self):
-        if self.edit_button.isChecked():
-            return
-        with open('autolocke\Data\data.json', 'r') as f:
-            self.data = json.load(f)
-        self.table.setRowCount(len(self.data))
-        self.table.setColumnCount(2)
-        self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
-        row = 0
-        print("JSONLOAD")
-        for location, pokemon in self.data.items():
-            self.table.setItem(row, 0, QTableWidgetItem(location))
-            self.table.setItem(row, 1, QTableWidgetItem(pokemon))
-            row += 1
+
+        options = QFileDialog.Options()
+        self.file_path, _ = QFileDialog.getOpenFileName(
+            self, "Select JSON File", "", "JSON Files (*.json)", options=options
+        )
+
+        if self.file_path:
+            with open(self.file_path, 'r') as f:
+                self.data = json.load(f)
+            self.table.setRowCount(len(self.data))
+            self.table.setColumnCount(2)
+            self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
+            row = 0
+            print("JSONLOAD")
+            for location, pokemon in self.data.items():
+                self.table.setItem(row, 0, QTableWidgetItem(location))
+                self.table.setItem(row, 1, QTableWidgetItem(pokemon))
+                row += 1
 
     def save_json_file(self):
         for row in range(self.table.rowCount()):
