@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
         self.load_json_file()
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
-        self.timer.timeout.connect(self.load_json_file)
+        self.timer.timeout.connect(self.reload_given_json)
         self.timer.start(250)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
@@ -104,6 +104,16 @@ class MainWindow(QMainWindow):
         with open(self.file_path, 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
+        row = 0
+        print("JSONRE")
+        for location, pokemon in self.data.items():
+            self.table.setItem(row, 0, QTableWidgetItem(location))
+            self.table.setItem(row, 1, QTableWidgetItem(pokemon))
+            row += 1
+
+
         
 
 
