@@ -1,8 +1,7 @@
 import json
 import threading
 from PyQt5.QtWidgets import *
-from PyQt5 import QtGui
-from PyQt5 import QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
@@ -20,6 +19,7 @@ with open('autolocke\Data\data.json') as json_filePoke:
     routePokemonDict = json.load(json_filePoke)
 
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
+currentGen = None
 
 
 class TipsDialog(QDialog):
@@ -55,13 +55,19 @@ class TipsDialog(QDialog):
 
         selectLabel = QLabel('Select your game version')
         top_layout.addWidget(selectLabel)
-        selectGameVersion = QComboBox()
-        top_layout.addWidget(selectGameVersion)
+        self.selectGameVersion = QComboBox()
+        top_layout.addWidget(self.selectGameVersion)
         layout.addLayout(top_layout)
-        
-
-        # Add the GIF label to the main QVBoxLayout layout
+        self.selectGameVersion.addItem("")        
+        self.selectGameVersion.addItem("Fire Red")
+        self.selectGameVersion.addItem("Emerald")
+        self.selectGameVersion.currentTextChanged.connect(self.changeGen)
         layout.addWidget(gif_label)
+
+    def changeGen(self, value):
+        currentGen = value
+        print(value)
+
 
 
 
@@ -88,7 +94,6 @@ class MainWindow(QMainWindow):
         self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
         self.data = {}
-        self.load_json_file()
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.reload_given_json)
