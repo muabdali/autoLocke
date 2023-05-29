@@ -22,6 +22,12 @@ cordsDictionary = {
     'Caught':[270, 800, 380, 207]
 }
 
+"""
+TODO - change reference check for fuzzywuzzy for appropriate txt route, right now
+it only checks fireredroutes no matter which gen is selected.
+
+"""
+
 #cordsDictionary removed from here, now only in file where ImageDiscover is called
 class ImageDiscover:
     def __init__(self, cordsDictionary, routeDict):

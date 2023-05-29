@@ -24,6 +24,7 @@ ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
 
+# TODO- Change save button so that file explorer pops up, and prompts user to save data.json to new location.
 
 class TipsDialog(QDialog):
     def __init__(self):
