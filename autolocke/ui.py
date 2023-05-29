@@ -1,13 +1,12 @@
 import json
 import threading
 from PyQt5.QtWidgets import *
-from PyQt5 import QtGui
-from PyQt5 import QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
-
+import os
 
 cordsDictionary = {
     'Route':[242, 47, 745, 121],
@@ -20,6 +19,7 @@ with open('autolocke\Data\data.json') as json_filePoke:
     routePokemonDict = json.load(json_filePoke)
 
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
+currentGen = None
 
 
 class TipsDialog(QDialog):
@@ -34,8 +34,6 @@ class TipsDialog(QDialog):
         top_layout = QHBoxLayout()
 
         # Create a QLabel widget and set the QMovie as its pixmap
-        label = QLabel('Welcome to the app!')
-        top_layout.addWidget(label)
 
         gif_label = QLabel()
         gif_movie = QMovie('autolocke/UI/479.gif')
@@ -55,8 +53,23 @@ class TipsDialog(QDialog):
         next_button.clicked.connect(self.close)  # Close the dialog
         layout.addWidget(next_button)
 
-        # Add the GIF label to the main QVBoxLayout layout
+        selectLabel = QLabel('Select your game version')
+        top_layout.addWidget(selectLabel)
+        self.selectGameVersion = QComboBox()
+        top_layout.addWidget(self.selectGameVersion)
+        layout.addLayout(top_layout)
+        self.selectGameVersion.addItem("")        
+        self.selectGameVersion.addItem("Fire Red")
+        self.selectGameVersion.addItem("Emerald")
+        self.selectGameVersion.currentTextChanged.connect(self.changeGen)
         layout.addWidget(gif_label)
+
+    def changeGen(self, value):
+        currentGen = value
+        print(value)
+
+
+
 
 
 class MainWindow(QMainWindow):
@@ -81,29 +94,54 @@ class MainWindow(QMainWindow):
         self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
         self.data = {}
-        self.load_json_file()
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
-        self.timer.timeout.connect(self.load_json_file)
+        self.timer.timeout.connect(self.reload_given_json)
         self.timer.start(250)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
+        self.file_path = None
 
-
-    def load_json_file(self):
+    def reload_given_json(self):
         if self.edit_button.isChecked():
             return
-        with open('autolocke\Data\data.json', 'r') as f:
+        with open(self.file_path, 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
         row = 0
-        print("JSONLOAD")
+        print("JSONRE")
         for location, pokemon in self.data.items():
             self.table.setItem(row, 0, QTableWidgetItem(location))
             self.table.setItem(row, 1, QTableWidgetItem(pokemon))
             row += 1
+
+
+        
+
+
+
+    def load_json_file(self):
+
+        options = QFileDialog.Options()
+        self.file_path, _ = QFileDialog.getOpenFileName(
+            self, "Select JSON File", "", "JSON Files (*.json)", options=options
+        )
+
+        if self.file_path:
+            with open(self.file_path, 'r') as f:
+                self.data = json.load(f)
+            self.table.setRowCount(len(self.data))
+            self.table.setColumnCount(2)
+            self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
+            row = 0
+            print("JSONLOAD")
+            for location, pokemon in self.data.items():
+                self.table.setItem(row, 0, QTableWidgetItem(location))
+                self.table.setItem(row, 1, QTableWidgetItem(pokemon))
+                row += 1
 
     def save_json_file(self):
         for row in range(self.table.rowCount()):
@@ -135,14 +173,17 @@ class MainWindow(QMainWindow):
         route_thread.start()
         caught_thread.start()
 
+
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route')
-        currentRouteAN = ab.screenshotAnalyze('routeImage.png')
+        imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
+        currentRouteAN = ab.screenshotAnalyze(imagePath)
         print(currentRouteAN)
 
     def analyzeCaught(self):
         pokemonCaughSS = ab.takeScreenshot('Caught')
-        pokemonCaught = ab.screenshotAnalyze('CaughtImage.png')
+        imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
+        pokemonCaught = ab.screenshotAnalyze(imagePath)
         if pokemonCaught is not None:
             self.data['Caught'] = pokemonCaught
             self.load_json_file()
