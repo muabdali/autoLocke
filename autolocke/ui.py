@@ -15,11 +15,14 @@ cordsDictionary = {
 }
 
 
+
 with open('autolocke\Data\data.json') as json_filePoke:
     routePokemonDict = json.load(json_filePoke)
 
+
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
+currentGenDirectory = None
 
 
 class TipsDialog(QDialog):
@@ -28,7 +31,7 @@ class TipsDialog(QDialog):
         self.setWindowTitle('Tips')
         layout = QVBoxLayout()
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
-
+        self.clasCurrentGen = None
 
         # Create a QHBoxLayout layout for the top right side of the dialog
         top_layout = QHBoxLayout()
@@ -51,6 +54,7 @@ class TipsDialog(QDialog):
         layout.addWidget(label2)
         next_button = QPushButton('Next')
         next_button.clicked.connect(self.close)  # Close the dialog
+        next_button.clicked.connect(self.convertGenJson)
         layout.addWidget(next_button)
 
         selectLabel = QLabel('Select your game version')
@@ -65,9 +69,22 @@ class TipsDialog(QDialog):
         layout.addWidget(gif_label)
 
     def changeGen(self, value):
-        currentGen = value
-        print(value)
-
+        self.clasCurrentGen = value
+        if value == "Fire Red":
+            print("FR")
+            self.clasCurrentGen = 'autolocke//Data//fireredroutes.txt'
+        elif value == "Emerald":
+            self.clasCurrentGen = 'autolocke//Data//emeraldroutes.txt'
+        return currentGenDirectory, currentGen
+    
+    def convertGenJson(self):
+        currentGenDirectory = self.clasCurrentGen  # Assign returned values to variables
+        with open(currentGenDirectory, 'r') as f:
+            routes = f.read().splitlines()
+        route_dict = {route: None for route in routes}
+        json_data = json.dumps(route_dict, indent=4)
+        with open('autolocke/Data/data.json', 'w') as file:
+            file.write(json_data)
 
 
 
@@ -101,7 +118,7 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
-        self.file_path = None
+        self.file_path = 'autolocke/Data/data.json'
 
     def reload_given_json(self):
         if self.edit_button.isChecked():
