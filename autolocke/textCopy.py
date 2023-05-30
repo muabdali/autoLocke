@@ -54,12 +54,12 @@ class ImageDiscover:
         print(self.dict[CurrentRoute])
 
 
-    def screenshotAnalyze(self, requestedImage):
+    def screenshotAnalyze(self, requestedImage, currentDirectory):
         ia = fuzzChecker
         text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList('autolocke/Data/fireredroutes.txt',stripText, minScore=76)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
