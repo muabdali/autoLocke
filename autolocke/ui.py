@@ -101,7 +101,7 @@ class MainWindow(QMainWindow):
         self.edit_button = QRadioButton('Edit')
         self.clear_button.clicked.connect(self.delete_all_values)
         self.load_button.clicked.connect(self.load_json_file)
-        self.save_button.clicked.connect(self.save_json_file)
+        self.save_button.clicked.connect(self.save_json_file_buttonFunction)
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
         layout.addWidget(self.table)
@@ -170,6 +170,19 @@ class MainWindow(QMainWindow):
             self.data[location] = pokemon
         with open('autolocke\Data\data.json', 'w') as f:
             json.dump(self.data, f, indent=4)
+
+# i dont know how, i dont want to know how, but for whatever reason adding any type of self variable to this function breaks the overall UI execution and closes the whole application
+# DO NOT TOUCH V
+    def save_json_file_buttonFunction(self):
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getSaveFileName(None, "Save File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        
+        if file_path:
+            # Perform further operations with the selected file path
+            print("Selected file path:", file_path)
+            # Additional operations with the file path
+        else:
+            print("No file selected. Operation canceled.")
 
     def delete_all_values(self):
         self.edit_button.setChecked(True)
