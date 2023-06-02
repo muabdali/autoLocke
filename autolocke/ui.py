@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
-from PyQt5.QtGui import QMovie, QFont, QFontDatabase
+from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
 import os
 
@@ -24,7 +24,28 @@ ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
 
-# TODO- Change save button so that file explorer pops up, and prompts user to save data.json to new location.
+
+class TutorialSteps(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Tutorial')
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        layout = QVBoxLayout(self)
+
+        gif_label_tut1 = QLabel(self)
+        layout.addWidget(gif_label_tut1)
+
+        gif_movie_tut1 = QMovie('autolocke/UI/tut1.gif')
+        gif_label_tut1.setMovie(gif_movie_tut1)
+        gif_movie_tut1.start()
+
+
+        tutlabel1 = QLabel('1. Adjust your emulator so it is fullscreen on the same monitor in which you launched the application in.')
+        tutlabel1.setFont(QFont("Verdana"))
+        layout.addWidget(tutlabel1)
+
+        nextButton = QPushButton('Next')
+        layout.addWidget(nextButton)
 
 class TipsDialog(QDialog):
     def __init__(self):
@@ -34,10 +55,10 @@ class TipsDialog(QDialog):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         self.clasCurrentGen = None
 
-        # Create a QHBoxLayout layout for the top right side of the dialog
+        # right side layout
         top_layout = QHBoxLayout()
 
-        # Create a QLabel widget and set the QMovie as its pixmap
+        # labels n widgets
 
         gif_label = QLabel()
         gif_movie = QMovie('autolocke/UI/479.gif')
@@ -237,6 +258,8 @@ if __name__ == '__main__':
     with open('style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
+    tutorial1 = TutorialSteps()
+    tutorial1.exec()
     tips_dialog = TipsDialog()
     tips_dialog.exec()
     window = MainWindow()
