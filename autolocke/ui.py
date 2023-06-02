@@ -30,22 +30,32 @@ class TutorialSteps(QDialog):
         super().__init__()
         self.setWindowTitle('Tutorial')
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
-        layout = QVBoxLayout(self)
+        self.layout = QVBoxLayout(self)
 
-        gif_label_tut1 = QLabel(self)
-        layout.addWidget(gif_label_tut1)
+        self.gif_label_tut1 = QLabel(self)
+        self.layout.addWidget(self.gif_label_tut1)
 
-        gif_movie_tut1 = QMovie('autolocke/UI/tut1.gif')
-        gif_label_tut1.setMovie(gif_movie_tut1)
-        gif_movie_tut1.start()
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut1.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
 
 
-        tutlabel1 = QLabel('1. Adjust your emulator so it is fullscreen on the same monitor in which you launched the application in.')
-        tutlabel1.setFont(QFont("Verdana"))
-        layout.addWidget(tutlabel1)
+        self.tutlabel1 = QLabel('1. Adjust your emulator so it is fullscreen on the same monitor in which you launched the application in.')
+        self.tutlabel1.setFont(QFont("Verdana"))
+        self.layout.addWidget(self.tutlabel1)
 
         nextButton = QPushButton('Next')
-        layout.addWidget(nextButton)
+        self.layout.addWidget(nextButton)
+        nextButton.clicked.connect(self.gifChange)
+
+
+    def gifChange(self):
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut2.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
+        self.tutlabel1.setText("2. Anchor the application to the TOP RIGHT of the emulator.")
+        
+        
 
 class TipsDialog(QDialog):
     def __init__(self):
