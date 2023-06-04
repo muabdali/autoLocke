@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import ImageDiscover
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
-from PyQt5.QtGui import QMovie, QFont, QFontDatabase
+from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
 import os
 
@@ -24,7 +24,43 @@ ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
 
-# TODO- Change save button so that file explorer pops up, and prompts user to save data.json to new location.
+
+class TutorialSteps(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Tutorial')
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        self.layout = QVBoxLayout(self)
+
+        self.gif_label_tut1 = QLabel(self)
+        self.layout.addWidget(self.gif_label_tut1)
+
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut1.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
+
+
+        self.tutlabel1 = QLabel('1. Adjust your emulator so it is fullscreen on the same monitor in which you launched the application in.')
+        self.tutlabel1.setFont(QFont("Verdana"))
+        self.layout.addWidget(self.tutlabel1)
+
+        self.nextButton = QPushButton('Next')
+        self.layout.addWidget(self.nextButton)
+        self.nextButton.clicked.connect(self.gifChange1)
+
+# TODO do all this below better with dictionary
+
+    def gifChange1(self):
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut2.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
+        self.tutlabel1.setText("2. Anchor the application to the TOP RIGHT of the emulator.")
+        self.nextButton.clicked.connect(self.gifChange2)
+    
+
+    def gifChange2(self):
+        self.close()
+        
 
 class TipsDialog(QDialog):
     def __init__(self):
@@ -34,10 +70,10 @@ class TipsDialog(QDialog):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         self.clasCurrentGen = None
 
-        # Create a QHBoxLayout layout for the top right side of the dialog
+        # right side layout
         top_layout = QHBoxLayout()
 
-        # Create a QLabel widget and set the QMovie as its pixmap
+        # labels n widgets
 
         gif_label = QLabel()
         gif_movie = QMovie('autolocke/UI/479.gif')
@@ -180,7 +216,14 @@ class MainWindow(QMainWindow):
 # DO NOT TOUCH V
     def save_json_file_buttonFunction(self):
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getSaveFileName(None, "Save File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        options |= QFileDialog.DontUseNativeDialog  # Use the platform-independent dialog
+        file_path, _ = QFileDialog.getSaveFileName(
+            None,
+            "Save File",
+            "",
+            "JSON Files (*.json)",  # Only allow JSON files
+            options=options
+        )
         
         if file_path:
             try:
@@ -237,6 +280,8 @@ if __name__ == '__main__':
     with open('style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
+    tutorial1 = TutorialSteps()
+    tutorial1.exec()
     tips_dialog = TipsDialog()
     tips_dialog.exec()
     window = MainWindow()
