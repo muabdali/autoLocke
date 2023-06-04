@@ -1,4 +1,4 @@
-autoLocke
+##autoLocke
 
 This is a desktop application built in Python that is meant to assist with
 nuzlocke runs.
