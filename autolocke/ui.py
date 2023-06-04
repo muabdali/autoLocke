@@ -225,6 +225,7 @@ class MainWindow(QMainWindow):
         imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
         pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
         if pokemonCaught is not None:
+            print(pokemonCaught)
             self.data['Caught'] = pokemonCaught
             self.load_json_file()
 

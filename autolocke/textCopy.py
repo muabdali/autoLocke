@@ -66,7 +66,7 @@ class ImageDiscover:
                 print("in dict")
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
-        elif requestedImage == 'autolocke\Images\CaughtImage.png':
+        elif requestedImage == 'autolocke\\Images\\CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
                 if "!" in text:
