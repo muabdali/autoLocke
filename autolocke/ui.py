@@ -44,9 +44,9 @@ class TutorialSteps(QDialog):
         self.tutlabel1.setFont(QFont("Verdana"))
         self.layout.addWidget(self.tutlabel1)
 
-        nextButton = QPushButton('Next')
-        self.layout.addWidget(nextButton)
-        nextButton.clicked.connect(self.gifChange1)
+        self.nextButton = QPushButton('Next')
+        self.layout.addWidget(self.nextButton)
+        self.nextButton.clicked.connect(self.gifChange1)
 
 # TODO do all this below better with dictionary
 
@@ -55,11 +55,11 @@ class TutorialSteps(QDialog):
         self.gif_label_tut1.setMovie(self.gif_movie_tut1)
         self.gif_movie_tut1.start()
         self.tutlabel1.setText("2. Anchor the application to the TOP RIGHT of the emulator.")
+        self.nextButton.clicked.connect(self.gifChange2)
     
 
     def gifChange2(self):
-        self.gif_movie_tut2 = QMovie('')
-        self.gif_label_tut2.setMovie(self.gif_movie_tut2)
+        self.close()
         
 
 class TipsDialog(QDialog):
@@ -216,7 +216,14 @@ class MainWindow(QMainWindow):
 # DO NOT TOUCH V
     def save_json_file_buttonFunction(self):
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getSaveFileName(None, "Save File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        options |= QFileDialog.DontUseNativeDialog  # Use the platform-independent dialog
+        file_path, _ = QFileDialog.getSaveFileName(
+            None,
+            "Save File",
+            "",
+            "JSON Files (*.json)",  # Only allow JSON files
+            options=options
+        )
         
         if file_path:
             try:
