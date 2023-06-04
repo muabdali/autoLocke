@@ -46,15 +46,20 @@ class TutorialSteps(QDialog):
 
         nextButton = QPushButton('Next')
         self.layout.addWidget(nextButton)
-        nextButton.clicked.connect(self.gifChange)
+        nextButton.clicked.connect(self.gifChange1)
 
+# TODO do all this below better with dictionary
 
-    def gifChange(self):
+    def gifChange1(self):
         self.gif_movie_tut1 = QMovie('autolocke/UI/tut2.gif')
         self.gif_label_tut1.setMovie(self.gif_movie_tut1)
         self.gif_movie_tut1.start()
         self.tutlabel1.setText("2. Anchor the application to the TOP RIGHT of the emulator.")
-        
+    
+
+    def gifChange2(self):
+        self.gif_movie_tut2 = QMovie('')
+        self.gif_label_tut2.setMovie(self.gif_movie_tut2)
         
 
 class TipsDialog(QDialog):
