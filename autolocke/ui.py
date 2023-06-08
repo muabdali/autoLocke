@@ -9,7 +9,7 @@ from time import sleep
 import os
 
 cordsDictionary = {
-    'Route':[242, 47, 745, 121],
+    'Route':[250, 76, 500, 150],
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207]
 }
@@ -106,7 +106,9 @@ class TipsDialog(QDialog):
         layout.addWidget(gif_label)
 
     def changeGen(self, value):
-        global currentGenDirectory
+        global currentGenDirectory, currentGen
+        currentGen = value
+        print('DEBUG' + currentGen)
         self.clasCurrentGen = value
         if value == "Fire Red":
             print("FR")
@@ -143,6 +145,7 @@ class MainWindow(QMainWindow):
         self.clear_button.clicked.connect(self.delete_all_values)
         self.load_button.clicked.connect(self.load_json_file)
         self.save_button.clicked.connect(self.save_json_file_buttonFunction)
+        self.currentRoutelabel = QLabel('')
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
         layout.addWidget(self.table)
@@ -150,6 +153,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.save_button)
         layout.addWidget(self.clear_button)
         layout.addWidget(self.edit_button)
+        layout.addWidget(self.currentRoutelabel)
         self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
         self.data = {}
@@ -260,7 +264,8 @@ class MainWindow(QMainWindow):
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route')
         imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
-        currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
+        currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
+        self.currentRoutelabel.setText(currentRouteAN)
         print(currentRouteAN)
 
     def analyzeCaught(self):

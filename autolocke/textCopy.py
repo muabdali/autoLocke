@@ -17,7 +17,7 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Route':[242, 47, 745, 121],
+    'Route':[250, 76, 500, 150],
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207]
 }
@@ -57,12 +57,12 @@ class ImageDiscover:
     def screenshotAnalyze(self, requestedImage, currentDirectory, analyzedGen=None):
         ia = fuzzChecker
         if analyzedGen == "Emerald":
-            text = imageEnhancer.
+            text = imageEnhancer.emeraldFunction(requestedImage)
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=70)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
