@@ -10,3 +10,5 @@ class imageEnhancer:
         image.save('EnhanceImage.png')
         text = pytesseract.image_to_string(image)
         return text
+    def emeraldFunction(imageToEnhance):
+        
