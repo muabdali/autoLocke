@@ -56,7 +56,10 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage, currentDirectory):
         ia = fuzzChecker
-        text = imageEnhancer.enhanceFunction(requestedImage)
+        if analyzedGen == "Emerald":
+            text = imageEnhancer.emeraldFunction(requestedImage)
+        else:
+            text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
             routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)

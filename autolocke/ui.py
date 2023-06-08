@@ -2,7 +2,7 @@ import json
 import threading
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
-from autolocke.textCopy import ImageDiscover
+from autolocke.textCopy import *
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase
 from time import sleep
@@ -70,8 +70,9 @@ class TipsDialog(QDialog):
         layout.addWidget(gif_label)
 
     def changeGen(self, value):
-        global currentGenDirectory
+        global currentGenDirectory, currentGen
         self.clasCurrentGen = value
+        currentGen = value
         if value == "Fire Red":
             print("FR")
             self.clasCurrentGen = 'autolocke//Data//fireredroutes.txt'
@@ -217,7 +218,7 @@ class MainWindow(QMainWindow):
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route')
         imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
-        currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
+        currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
         print(currentRouteAN)
 
     def analyzeCaught(self):
