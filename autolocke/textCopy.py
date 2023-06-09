@@ -17,9 +17,10 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Route':[242, 47, 745, 121],
+    'Route_Emerald':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207]
+    'Caught':[270, 800, 380, 207],
+    'Route_FireRed':[]
 }
 
 """
@@ -36,8 +37,12 @@ class ImageDiscover:
         self.currentPokemon = ''
         self.currentRoute = ''
         self.routeDictionary = routeDict
+    
 
-    def takeScreenshot(self, section_name):
+    def takeScreenshot(self, section_name, currentGenScreenshot):
+        if section_name == 'Route':
+            section_name = section_name + currentGenScreenshot
+            return section_name
         #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
