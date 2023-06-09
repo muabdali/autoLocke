@@ -258,7 +258,7 @@ class MainWindow(QMainWindow):
         caught_thread.start()
 
     def analyzeRoute(self):
-        currentRouteSS = ab.takeScreenshot('Route')
+        currentRouteSS = ab.takeScreenshot('Route', currentGenScreenshot = currentGen)
         imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
         currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
         print(currentRouteAN)
