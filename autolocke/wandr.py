@@ -18,12 +18,12 @@ class wandr():
         self.Gen3TableData = ('autolocke/Data/1to5.csv')
         
         
-    def multiplier(self):
-        data = pd.read_csv(self.Gen3TableData)
-        df = pd.DataFrame(data)
-        print(df)
+    def multiplier(self, attack, defense):
+        data = pd.read_csv(self.Gen3TableData, index_col=0) 
+        intersection_value = data.loc[attack, defense]
+        print(intersection_value)
 
 
 
 tf = wandr()
-tf.multiplier()
+tf.multiplier("Fire", "Grass")
