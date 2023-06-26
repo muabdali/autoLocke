@@ -8,12 +8,13 @@ from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
 import os
 
-cordsDictionary = {
-    'Route':[250, 76, 500, 150],
-    'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207]
-}
 
+cordsDictionary = {
+    'Route_Emerald':[242, 47, 745, 121],
+    'Pokemon':[300, 110, 450, 121],
+    'Caught':[270, 800, 380, 207],
+    'Route_Fire Red':[242, 47, 745, 121]
+}
 
 
 with open('autolocke\Data\data.json') as json_filePoke:
@@ -263,13 +264,14 @@ class MainWindow(QMainWindow):
 
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route', currentGenScreenshot = currentGen)
-        imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
+        imagePath = os.path.join('autolocke', 'Images', 'RouteImage.png')
         currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
         self.currentRoutelabel.setText(currentRouteAN)
         print(currentRouteAN)
+        return currentRouteSS
 
     def analyzeCaught(self):
-        pokemonCaughSS = ab.takeScreenshot('Caught')
+        pokemonCaughSS = ab.takeScreenshot('Caught', currentGenScreenshot=currentGen)
         imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
         pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
         if pokemonCaught is not None:

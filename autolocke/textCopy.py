@@ -17,10 +17,11 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Route_Emerald':[242, 47, 745, 121],
+    'Emerald':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207],
-    'Route_FireRed':[]
+    'Fire Red':[242, 47, 745, 121],
+    'DUMBFUCK':[1,2,3,4]
 }
 
 """
@@ -41,15 +42,16 @@ class ImageDiscover:
 
     def takeScreenshot(self, section_name, currentGenScreenshot):
         if section_name == 'Route':
-            section_name = section_name + currentGenScreenshot
-            return section_name
-        #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
+            section_name = currentGenScreenshot
+            print(section_name)
+            #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
+        
         self.section = cordsDictionary[section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
         images_directory = os.path.join(script_directory, "Images")
-        file_path = os.path.join(images_directory, f'{section_name}Image.png')
+        file_path = os.path.join(images_directory, f'RouteImage.png')
         screenshot.save(file_path)
 
 
