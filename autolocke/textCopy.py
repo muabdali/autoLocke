@@ -20,8 +20,8 @@ cordsDictionary = {
     'Emerald':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207],
-    'Fire Red':[242, 47, 745, 121],
-    'DUMBFUCK':[1,2,3,4]
+    'Fire Red Route':[242, 47, 745, 121],
+    'Fire Red Caught':[270, 800, 380, 207]
 }
 
 """
@@ -41,19 +41,20 @@ class ImageDiscover:
     
 
     def takeScreenshot(self, section_name, currentGenScreenshot):
-        if section_name == 'Route':
-            section_name = currentGenScreenshot
-            print(section_name)
-            #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
-        
-        self.section = cordsDictionary[section_name]
+        #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
+        self.section = cordsDictionary[currentGenScreenshot + " " + section_name]
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
         images_directory = os.path.join(script_directory, "Images")
-        file_path = os.path.join(images_directory, f'RouteImage.png')
-        screenshot.save(file_path)
-
+        if section_name == 'Route':
+            file_path = os.path.join(images_directory, f'RouteImage.png')
+            screenshot.save(file_path)
+        elif section_name == 'Caught':
+            file_path = os.path.join(images_directory, f'CaughtImage.png')
+            screenshot.save(file_path)
+        else:
+            print(f'takescreenshot sectionname error1: section name is {section_name}')
 
 
     def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):
