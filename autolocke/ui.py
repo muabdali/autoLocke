@@ -24,6 +24,9 @@ with open('autolocke\Data\data.json') as json_filePoke:
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
+currentVersion = "23.7.01mi1"
+# Format for version = year.month.day.mi/mj.version
+# mi = minor update mj = major update.
 
 
 class TutorialSteps(QDialog):
@@ -48,6 +51,9 @@ class TutorialSteps(QDialog):
         self.nextButton = QPushButton('Next')
         self.layout.addWidget(self.nextButton)
         self.nextButton.clicked.connect(self.gifChange1)
+
+        self.versionLabel = QLabel(f'Version: {currentVersion}')
+        self.layout.addWidget(self.versionLabel)
 
 # TODO do all this below better with dictionary
 
@@ -105,6 +111,9 @@ class TipsDialog(QDialog):
         self.selectGameVersion.addItem("Emerald")
         self.selectGameVersion.currentTextChanged.connect(self.changeGen)
         layout.addWidget(gif_label)
+
+        versionLabel = QLabel(f'Version: {currentVersion}')
+        layout.addWidget(versionLabel)
 
     def changeGen(self, value):
         global currentGenDirectory, currentGen
@@ -166,6 +175,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
         self.file_path = 'autolocke/Data/data.json'
+        versionLabel = QLabel(f'Version: {currentVersion}')
+        layout.addWidget(versionLabel)
 
     def reload_given_json(self):
         if self.edit_button.isChecked():

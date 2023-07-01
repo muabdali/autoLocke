@@ -42,7 +42,7 @@ class ImageDiscover:
 
     def takeScreenshot(self, section_name, currentGenScreenshot):
         #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
-        self.section = cordsDictionary[currentGenScreenshot + " " + section_name]
+        self.section = cordsDictionary[f'{currentGenScreenshot} {section_name}']
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
