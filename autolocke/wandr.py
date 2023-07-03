@@ -25,5 +25,3 @@ class wandr():
 
 
 
-tf = wandr()
-tf.multiplier("Fire", "Grass")
