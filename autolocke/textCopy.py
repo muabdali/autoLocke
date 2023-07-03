@@ -17,9 +17,11 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Route':[242, 47, 745, 121],
+    'Emerald':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207]
+    'Caught':[270, 800, 380, 207],
+    'Fire Red Route':[242, 47, 745, 121],
+    'Fire Red Caught':[270, 800, 380, 207]
 }
 
 """
@@ -36,17 +38,23 @@ class ImageDiscover:
         self.currentPokemon = ''
         self.currentRoute = ''
         self.routeDictionary = routeDict
+    
 
-    def takeScreenshot(self, section_name):
+    def takeScreenshot(self, section_name, currentGenScreenshot):
         #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
-        self.section = cordsDictionary[section_name]
+        self.section = cordsDictionary[f'{currentGenScreenshot} {section_name}']
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
         images_directory = os.path.join(script_directory, "Images")
-        file_path = os.path.join(images_directory, f'{section_name}Image.png')
-        screenshot.save(file_path)
-
+        if section_name == 'Route':
+            file_path = os.path.join(images_directory, f'RouteImage.png')
+            screenshot.save(file_path)
+        elif section_name == 'Caught':
+            file_path = os.path.join(images_directory, f'CaughtImage.png')
+            screenshot.save(file_path)
+        else:
+            print(f'takescreenshot sectionname error1: section name is {section_name}')
 
 
     def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):
@@ -54,7 +62,7 @@ class ImageDiscover:
         print(self.dict[CurrentRoute])
 
 
-    def screenshotAnalyze(self, requestedImage, currentDirectory):
+    def screenshotAnalyze(self, requestedImage, currentDirectory, analyzedGen=None):
         ia = fuzzChecker
         if analyzedGen == "Emerald":
             text = imageEnhancer.emeraldFunction(requestedImage)
@@ -62,7 +70,7 @@ class ImageDiscover:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke\\Images\\routeImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=70)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:

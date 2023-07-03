@@ -4,16 +4,17 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import *
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
-from PyQt5.QtGui import QMovie, QFont, QFontDatabase
+from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
 import os
 
-cordsDictionary = {
-    'Route':[242, 47, 745, 121],
-    'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207]
-}
 
+cordsDictionary = {
+    'Route_Emerald':[242, 47, 745, 121],
+    'Pokemon':[300, 110, 450, 121],
+    'Caught':[270, 800, 380, 207],
+    'Route_Fire Red':[242, 47, 745, 121]
+}
 
 
 with open('autolocke\Data\data.json') as json_filePoke:
@@ -23,8 +24,50 @@ with open('autolocke\Data\data.json') as json_filePoke:
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
+currentVersion = "23.7.01mi1"
+# Format for version = year.month.day.mi/mj.version
+# mi = minor update mj = major update.
 
-# TODO- Change save button so that file explorer pops up, and prompts user to save data.json to new location.
+
+class TutorialSteps(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Tutorial')
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        self.layout = QVBoxLayout(self)
+
+        self.gif_label_tut1 = QLabel(self)
+        self.layout.addWidget(self.gif_label_tut1)
+
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut1.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
+
+
+        self.tutlabel1 = QLabel('1. Adjust your emulator so it is fullscreen on the same monitor in which you launched the application in.')
+        self.tutlabel1.setFont(QFont("Verdana"))
+        self.layout.addWidget(self.tutlabel1)
+
+        self.nextButton = QPushButton('Next')
+        self.layout.addWidget(self.nextButton)
+        self.nextButton.clicked.connect(self.gifChange1)
+
+        self.versionLabel = QLabel(f'Version: {currentVersion}')
+        self.layout.addWidget(self.versionLabel)
+
+# TODO do all this below better with dictionary
+
+    def gifChange1(self):
+        self.gif_movie_tut1 = QMovie('autolocke/UI/tut2.gif')
+        self.gif_label_tut1.setMovie(self.gif_movie_tut1)
+        self.gif_movie_tut1.start()
+        self.tutlabel1.setText("2. Anchor the application to the TOP RIGHT of the emulator.")
+        self.nextButton.clicked.connect(self.gifChange2)
+    
+
+    def gifChange2(self):
+        self.close()
+        
 
 class TipsDialog(QDialog):
     def __init__(self):
@@ -34,10 +77,10 @@ class TipsDialog(QDialog):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         self.clasCurrentGen = None
 
-        # Create a QHBoxLayout layout for the top right side of the dialog
+        # right side layout
         top_layout = QHBoxLayout()
 
-        # Create a QLabel widget and set the QMovie as its pixmap
+        # labels n widgets
 
         gif_label = QLabel()
         gif_movie = QMovie('autolocke/UI/479.gif')
@@ -69,8 +112,13 @@ class TipsDialog(QDialog):
         self.selectGameVersion.currentTextChanged.connect(self.changeGen)
         layout.addWidget(gif_label)
 
+        versionLabel = QLabel(f'Version: {currentVersion}')
+        layout.addWidget(versionLabel)
+
     def changeGen(self, value):
         global currentGenDirectory, currentGen
+        currentGen = value
+        print('DEBUG' + currentGen)
         self.clasCurrentGen = value
         currentGen = value
         if value == "Fire Red":
@@ -108,6 +156,7 @@ class MainWindow(QMainWindow):
         self.clear_button.clicked.connect(self.delete_all_values)
         self.load_button.clicked.connect(self.load_json_file)
         self.save_button.clicked.connect(self.save_json_file_buttonFunction)
+        self.currentRoutelabel = QLabel('')
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
         layout.addWidget(self.table)
@@ -115,6 +164,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.save_button)
         layout.addWidget(self.clear_button)
         layout.addWidget(self.edit_button)
+        layout.addWidget(self.currentRoutelabel)
         self.edit_button.setStyleSheet('QRadioButton { text-align: center; }')
         self.setCentralWidget(central_widget)
         self.data = {}
@@ -126,6 +176,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
         self.file_path = 'autolocke/Data/data.json'
+        versionLabel = QLabel(f'Version: {currentVersion}')
+        layout.addWidget(versionLabel)
 
     def reload_given_json(self):
         if self.edit_button.isChecked():
@@ -181,7 +233,14 @@ class MainWindow(QMainWindow):
 # DO NOT TOUCH V
     def save_json_file_buttonFunction(self):
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getSaveFileName(None, "Save File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        options |= QFileDialog.DontUseNativeDialog  # Use the platform-independent dialog
+        file_path, _ = QFileDialog.getSaveFileName(
+            None,
+            "Save File",
+            "",
+            "JSON Files (*.json)",  # Only allow JSON files
+            options=options
+        )
         
         if file_path:
             try:
@@ -216,13 +275,15 @@ class MainWindow(QMainWindow):
         caught_thread.start()
 
     def analyzeRoute(self):
-        currentRouteSS = ab.takeScreenshot('Route')
-        imagePath = os.path.join('autolocke', 'Images', 'routeImage.png')
+        currentRouteSS = ab.takeScreenshot('Route', currentGenScreenshot = currentGen)
+        imagePath = os.path.join('autolocke', 'Images', 'RouteImage.png')
         currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
+        self.currentRoutelabel.setText(currentRouteAN)
         print(currentRouteAN)
+        return currentRouteSS
 
     def analyzeCaught(self):
-        pokemonCaughSS = ab.takeScreenshot('Caught')
+        pokemonCaughSS = ab.takeScreenshot('Caught', currentGenScreenshot=currentGen)
         imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
         pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
         if pokemonCaught is not None:
@@ -238,6 +299,8 @@ if __name__ == '__main__':
     with open('style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
+    tutorial1 = TutorialSteps()
+    tutorial1.exec()
     tips_dialog = TipsDialog()
     tips_dialog.exec()
     window = MainWindow()
