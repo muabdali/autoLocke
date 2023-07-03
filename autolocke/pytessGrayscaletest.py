@@ -40,6 +40,6 @@ class imageEnhancer:
         # Save the resulting image
         cv2.imwrite('autolocke/Images/RouteImage.png', result)
 
-        text = pytesseract.image_to_string(result, lang='ruby')
+        text = pytesseract.image_to_string(result)
         print(text)
         return text
