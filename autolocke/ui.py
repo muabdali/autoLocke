@@ -17,7 +17,7 @@ cordsDictionary = {
 }
 
 
-with open('autolocke\Data\data.json') as json_filePoke:
+with open('autolocke/Data/data.json') as json_filePoke:
     routePokemonDict = json.load(json_filePoke)
 
 
@@ -225,7 +225,7 @@ class MainWindow(QMainWindow):
             location = location_item.text()
             pokemon = pokemon_item.text()
             self.data[location] = pokemon
-        with open('autolocke\Data\data.json', 'w') as f:
+        with open('autolocke/Data/data.json', 'w') as f:
             json.dump(self.data, f, indent=4)
 
 # i dont know how, i dont want to know how, but for whatever reason adding any type of self variable to this function breaks the overall UI execution and closes the whole application
@@ -255,7 +255,7 @@ class MainWindow(QMainWindow):
 
     def delete_all_values(self):
         self.edit_button.setChecked(True)
-        with open('autolocke\Data\data.json', 'r') as f:
+        with open('autolocke/Data/data.json', 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
         self.table.setColumnCount(2)
