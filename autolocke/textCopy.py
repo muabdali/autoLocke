@@ -17,7 +17,8 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Emerald':[242, 47, 745, 121],
+    'Emerald Route':[242, 47, 745, 121],
+    'Emerald Caught':[242, 47, 745, 121],
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207],
     'Fire Red Route':[242, 47, 745, 121],
