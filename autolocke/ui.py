@@ -24,7 +24,7 @@ with open('autolocke\Data\data.json') as json_filePoke:
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
-currentVersion = "23.7.01mi1"
+currentVersion = "23.7.01mi2"
 # Format for version = year.month.day.mi/mj.version
 # mi = minor update mj = major update.
 
@@ -148,6 +148,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('autoLocke')
+        self.createAction()
+        self.createMenu()
         self.table = QTableWidget()
         self.load_button = QPushButton('Load')
         self.save_button = QPushButton('Save')
@@ -178,6 +180,26 @@ class MainWindow(QMainWindow):
         self.file_path = 'autolocke/Data/data.json'
         versionLabel = QLabel(f'Version: {currentVersion}')
         layout.addWidget(versionLabel)
+
+    
+    def createAction(self):
+        self.newAction = QAction(self)
+        self.newAction.setText("&Weakness and Resistance")
+        self.newAction.triggered.connect(self.popUpWANDR)
+
+    def popUpWANDR(self):
+        tutorial1 = TutorialSteps()
+        tutorial1.show()
+        tutorial1.exec()
+
+    def createMenu(self):
+        menubar = self.menuBar()
+        self.setMenuBar(menubar)
+        fileMenu  = QMenu("&Tools", self)
+        menubar.addMenu(fileMenu)
+        fileMenu.addAction(self.newAction)
+
+
 
     def reload_given_json(self):
         if self.edit_button.isChecked():
