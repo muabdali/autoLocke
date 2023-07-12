@@ -35,10 +35,17 @@ class WANDR(QDialog):
         self.setWindowFlags(Qt.Drawer)
         self.layout = QVBoxLayout(self)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+        self.pokemonList = []
+        self.convertToCSV(jsonFile='autolocke/Data/data.json', csvOutput='autolocke/Data/wandr.csv')
+        self.fillWANDR('autolocke/Data/wandr.csv')
 
         self.table = QTableWidget()
-        self.convertToCSV(jsonFile='autolocke/Data/data.json', csvOutput='autolocke/Data/wandr.csv')
+        self.table.setRowCount(len(self.pokemonList))
+        self.table.setColumnCount(3)
+        self.table.setHorizontalHeaderLabels(["Pokemon", "Weakness", "Resistance"])
 
+        self.layout.addWidget(self.table)
+        self.populateTable()
 
 
 
@@ -52,15 +59,28 @@ class WANDR(QDialog):
         if not jsonData:
             print("Error: JSON data is empty.")
             return
-        route_names = list(jsonData.keys())
+
+        values = list(jsonData.values())  # Extract the values
 
         with open(csvOutput, 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Route Names"])
-            writer.writerows([[route] for route in route_names])
+            writer.writerow(["Values"])
+            writer.writerows([[value] for value in values])
     
     def fillWANDR(self, csvFile):
-        return
+        with open(csvFile, 'r') as file:
+            csvData = csv.reader(file)
+            for row in csvData:
+                row = row[0]
+                print(row)
+                if row == 'Values':
+                    print('rem. values')
+                else:
+                    self.pokemonList.append(row)
+    def populateTable(self):
+        for row, value in enumerate(self.pokemonList):
+            item = QTableWidgetItem(value)  # Create a QTableWidgetItem for the value
+            self.table.setItem(row, 0, item)  # Set the item in the first column of the current row
 
 
 
@@ -242,7 +262,7 @@ class MainWindow(QMainWindow):
         with open(self.file_path, 'r') as f:
             self.data = json.load(f)
         self.table.setRowCount(len(self.data))
-        self.table.setColumnCount(2)
+        self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(['Location', 'Pokemon'])
         row = 0
         print("JSONRE")
