@@ -6,6 +6,7 @@ from autolocke.textCopy import *
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
+import csv
 import os
 
 
@@ -27,6 +28,40 @@ currentGenDirectory = None
 currentVersion = "23.7.01mi2"
 # Format for version = year.month.day.mi/mj.version
 # mi = minor update mj = major update.
+
+class WANDR(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowFlags(Qt.Drawer)
+        self.layout = QVBoxLayout(self)
+        self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
+
+        self.table = QTableWidget()
+        self.convertToCSV(jsonFile='autolocke/Data/data.json', csvOutput='autolocke/Data/wandr.csv')
+
+
+
+
+
+        self.layout.addWidget(self.table)
+
+    def convertToCSV(self, jsonFile, csvOutput):
+        with open(jsonFile, 'r') as file:
+            jsonData = json.load(file)
+
+        if not jsonData:
+            print("Error: JSON data is empty.")
+            return
+        route_names = list(jsonData.keys())
+
+        with open(csvOutput, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Route Names"])
+            writer.writerows([[route] for route in route_names])
+    
+    def fillWANDR(self, csvFile):
+        return
+
 
 
 class TutorialSteps(QDialog):
@@ -157,7 +192,7 @@ class MainWindow(QMainWindow):
         self.edit_button = QRadioButton('Edit')
         self.clear_button.clicked.connect(self.delete_all_values)
         self.load_button.clicked.connect(self.load_json_file)
-        self.save_button.clicked.connect(self.save_json_file_buttonFunction)
+        self.save_button.clicked.connect(self.doubleSave)
         self.currentRoutelabel = QLabel('')
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
@@ -188,9 +223,9 @@ class MainWindow(QMainWindow):
         self.newAction.triggered.connect(self.popUpWANDR)
 
     def popUpWANDR(self):
-        tutorial1 = TutorialSteps()
-        tutorial1.show()
-        tutorial1.exec()
+        wandrpopup = WANDR()
+        wandrpopup.show()
+        wandrpopup.exec()
 
     def createMenu(self):
         menubar = self.menuBar()
@@ -218,7 +253,10 @@ class MainWindow(QMainWindow):
 
 
         
-
+    def doubleSave(self):
+        self.save_json_file()
+        self.save_json_file_buttonFunction()
+        
 
 
     def load_json_file(self):
@@ -229,13 +267,22 @@ class MainWindow(QMainWindow):
 
         if file_path:
             try:
+                # Read the contents of the JSON file
                 with open(file_path, 'r') as source_file:
-                    data = json.load(source_file)
-                with open('autolocke/Data/data.json', 'w') as destination_file:
-                    json.dump(data, destination_file, indent=4)
-                print("Data loaded and saved to data.json")
+                    new_data = json.load(source_file)
+
+                # Check if the loaded data is different from the current data
+                if self.data != new_data:
+                    self.data = new_data
+                    with open('autolocke/Data/data.json', 'w') as destination_file:
+                        json.dump(self.data, destination_file, indent=4)
+                    print("Data loaded and saved to data.json")
+                else:
+                    print("Data unchanged. Previous values retained.")
+
                 self.file_path = 'autolocke/Data/data.json'  # Update the file path
                 self.reload_given_json()  # Reload the data in the table
+
             except Exception as e:
                 print(f"Error loading and saving data: {e}")
         else:
@@ -248,7 +295,8 @@ class MainWindow(QMainWindow):
             location = location_item.text()
             pokemon = pokemon_item.text()
             self.data[location] = pokemon
-        with open('autolocke\Data\data.json', 'w') as f:
+            
+        with open(self.file_path, 'w') as f:
             json.dump(self.data, f, indent=4)
 
 # i dont know how, i dont want to know how, but for whatever reason adding any type of self variable to this function breaks the overall UI execution and closes the whole application
@@ -321,8 +369,8 @@ if __name__ == '__main__':
     with open('style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
-    tutorial1 = TutorialSteps()
-    tutorial1.exec()
+    wandrpopup = TutorialSteps()
+    wandrpopup.exec()
     tips_dialog = TipsDialog()
     tips_dialog.exec()
     window = MainWindow()
