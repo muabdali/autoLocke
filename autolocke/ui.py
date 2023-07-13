@@ -38,6 +38,8 @@ class WANDR(QDialog):
         self.pokemonList = []
         self.convertToCSV(jsonFile='autolocke/Data/data.json', csvOutput='autolocke/Data/wandr.csv')
         self.fillWANDR('autolocke/Data/wandr.csv')
+        self.setFixedWidth(370)
+        self.setWindowTitle('WANDR')
 
         self.table = QTableWidget()
         self.table.setRowCount(len(self.pokemonList))
