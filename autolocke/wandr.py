@@ -94,7 +94,7 @@ class wandr():
         for pokemon, types in self.pokemonTypingDict.items():
             if len(types) > 1:
                 type_string = ' and '.join(types)
-                if len(type_string) > 1:
+                if len(type_string) > 8:
                     type1, type2 = type_string.split(" and ")
                     weakness1 = self.weaknessFinder(type1)
                     weakness2 = self.weaknessFinder(type2)
