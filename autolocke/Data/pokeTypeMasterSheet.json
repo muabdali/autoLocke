@@ -765,6 +765,13 @@
         "Type2": ["Flying"]
     },
     {
+
+        "Name": "Scizor",
+        "Type1": ["Bug"],
+        "Type2": ["Steel"]
+
+    },
+    {
         "Name": "Jynx",
         "Type1": ["Ice"],
         "Type2": ["Psychic"]

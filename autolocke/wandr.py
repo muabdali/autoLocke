@@ -21,13 +21,25 @@ class wandr():
         weaknesses = data[defense]
         wDict = data[defense].to_dict()
         weakOnly = {key for key, value in wDict.items() if value == '2'}
-        return weakOnly
+        return wDict
     
     def resistanceFinder(self, defense):
         data = pd.read_csv(self.Gen3TableData, index_col=0)
         resistance = data.loc[defense]
         resOnly = {key for key, value in resistance.items() if value == '1/2'}
         return resOnly
+    
+    def weakcombine(self, dict1, dict2):
+        result = {}
+
+        for key in dict1:
+            if key in dict2:
+                value1 = eval(dict1[key])  # Convert string to numeric value
+                value2 = eval(dict2[key])
+                result[key] = str(value1 * value2)  # Store the multiplication result as a string
+
+        print(result)
+        return(result)
 
 
 
@@ -75,32 +87,48 @@ class wandr():
                 pokemon_types[name] = 'Not Found'
         print(pokemon_types)
         self.pokemonTypingDict = pokemon_types
-
+        
     def isolateType(self):
+        combined_weaknesses = {}  # Dictionary to store combined weaknesses
+        
         for pokemon, types in self.pokemonTypingDict.items():
             if len(types) > 1:
                 type_string = ' and '.join(types)
-                print(type_string)
-                if len(type_string) >8:
+                if len(type_string) > 1:
                     type1, type2 = type_string.split(" and ")
                     weakness1 = self.weaknessFinder(type1)
                     weakness2 = self.weaknessFinder(type2)
-                    print(f'The Pokemon {pokemon} is {type1, type2} and is weak to {weakness1, weakness2}')
+                    combined_weakness = self.weakcombine(dict1=weakness1, dict2=weakness2)
+                    combined_weaknesses[pokemon] = combined_weakness
             else:
-                print(types[0])
-    
-    def save_dictionary_as_csv(self):
-        keys = self.pokemonTypingDict.keys()
-        values = self.pokemonTypingDict.values()
+                weakness1 = self.weaknessFinder(types[0])
+                combined_weaknesses[pokemon] = weakness1
+        
+        # Save combined_weaknesses dictionary in desired format
+        self.save_dictionary_as_csv(combined_weaknesses)
+        self.save_dictionary_as_json(combined_weaknesses)
+        self.save_dictionary(combined_weaknesses)
 
+    def save_dictionary_as_csv(self, dictionary):
         with open('autolocke/Data/wandrTyping.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(keys)
-            writer.writerow(values)
+            writer.writerow(['Pokemon', 'Combined Weakness'])
+            for pokemon, weaknesses in dictionary.items():
+                writer.writerow([pokemon, weaknesses])
 
+    def save_dictionary_as_json(self, dictionary):
+        with open('autolocke/Data/wandrTyping.json', 'w') as jsonfile:
+            json.dump(dictionary, jsonfile)
+
+    def save_dictionary(self, dictionary):
+        # No specific file extension, dictionary is returned
+        # for further processing or storage
+        return dictionary
 test = wandr()
 
 test.csvInputToOutput()
 test.getTyping()
 test.pokemonTyping()
 test.isolateType()
+
+

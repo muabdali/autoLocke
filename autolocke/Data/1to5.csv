@@ -1,6 +1,6 @@
 Name,Normal,Fire,Water,Electric,Grass,Ice,Fighting,Poison,Ground,Flying,Psychic,Bug,Rock,Ghost,Dragon,Dark,Steel
 Normal,1,1,1,1,1,1,1,1,1,1,1,1,1/2,0,1,1,1/2
-Fire,1,1/2,1/2,1,2,2,1,1,1,1,1,2,1/2,1,1/2,1,1
+Fire,1,1/2,1/2,1,2,2,1,1,1,1,1,2,1/2,1,1/2,1,2
 Water,1,2,1/2,1,1/2,1/2,1,1,2,1,1,1,2,1,1/2,1,1
 Electric,1,1,2,1/2,1/2,1/2,1,1,0,2,1,1,1,1,1/2,1,1
 Grass,1,1/2,2,1,1/2,1/2,1,1/2,2,1/2,1,1/2,2,1,1/2,1,1/2
