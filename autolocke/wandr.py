@@ -35,13 +35,12 @@ class wandr():
 
         for key in dict1:
             if key in dict2:
-                value1 = eval(dict1[key])  # Convert string to numeric value
-                value2 = eval(dict2[key])
+                value1 = float(dict1[key]) if dict1[key] != '1/2' else 0.5  # Handle resistance value '1/2'
+                value2 = float(dict2[key]) if dict2[key] != '1/2' else 0.5
                 result[key] = str(value1 * value2)  # Store the multiplication result as a string
 
         print(result)
-        return(result)
-
+        return result
 
 
     def getTyping(self):

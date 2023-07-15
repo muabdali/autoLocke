@@ -292,6 +292,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
         self.file_path = 'autolocke/Data/data.json'
+        self.temp_file_path = ""
         versionLabel = QLabel(f'Version: {currentVersion}')
         layout.addWidget(versionLabel)
         print(f'AFTER {currentGenDirectory}')
@@ -384,7 +385,7 @@ class MainWindow(QMainWindow):
     def save_json_file_buttonFunction(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog  # Use the platform-independent dialog
-        file_path, _ = QFileDialog.getSaveFileName(
+        self.temp_file_path, _ = QFileDialog.getSaveFileName(
             None,
             "Save File",
             "",
@@ -392,13 +393,13 @@ class MainWindow(QMainWindow):
             options=options
         )
         
-        if file_path:
+        if self.temp_file_path:
             try:
                 with open('autolocke/Data/data.json', 'r') as source_file:
                     data = source_file.read()
-                with open(file_path, 'w') as destination_file:
+                with open(self.temp_file_path, 'w') as destination_file:
                     destination_file.write(data)
-                print("Data saved to:", file_path)
+                print("Data saved to:", self.temp_file_path)
             except Exception as e:
                 print(f"Error saving data: {e}")
         else:
