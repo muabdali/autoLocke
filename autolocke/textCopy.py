@@ -69,9 +69,9 @@ class ImageDiscover:
             text = imageEnhancer.emeraldFunction(requestedImage)
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
-        if requestedImage == 'autolocke\\Images\\routeImage.png':
+        if requestedImage == 'autolocke\\Images\\RouteImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=70)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=75)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
@@ -85,9 +85,13 @@ class ImageDiscover:
                     gotchaOrNot, pokemonName = text.split("!\n")
                 elif "|\n" in text:
                     gotchaOrNot, pokemonName = text.split("|\n")
+                else:
+                    print("CAUGHT ERROR89 tC.p")
                 fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
+                """
+                OLD VERSION WITH NO ERROR CATCH
                 if gotchaOrNot == 'Gotcha ':
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     self.routeDictionary[self.currentRoute] = fuzz_pokemonName
@@ -95,7 +99,18 @@ class ImageDiscover:
                     json_string = json.dumps(self.routeDictionary)
                     with open("autolocke\Data\data.json", "w") as f:
                         f.write(json_string)
-
+                """
+                if gotchaOrNot == 'Gotcha ':
+                    print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
+                    if fuzz_pokemonName:
+                        self.routeDictionary[self.currentRoute] = fuzz_pokemonName
+                    else:
+                        # Handle the case when the value is empty
+                        self.routeDictionary.pop(self.currentRoute, None)
+                    print(self.routeDictionary[self.currentRoute])
+                    json_string = json.dumps(self.routeDictionary)
+                    with open("autolocke\Data\data.json", "w") as f:
+                        f.write(json_string)
                 else:
                     return
             else:

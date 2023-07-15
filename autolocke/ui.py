@@ -3,9 +3,11 @@ import threading
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from autolocke.textCopy import *
+from autolocke.wandr import wandr
 from PyQt5.QtCore import QTimer, Qt, QStringListModel
 from PyQt5.QtGui import QMovie, QFont, QFontDatabase, QPixmap
 from time import sleep
+from fractions import Fraction
 import csv
 import os
 
@@ -42,17 +44,16 @@ class WANDR(QDialog):
         self.setWindowTitle('WANDR')
 
         self.table = QTableWidget()
-        self.table.setRowCount(len(self.pokemonList))
         self.table.setColumnCount(3)
-        self.table.setHorizontalHeaderLabels(["Pokemon", "Weakness", "Resistance"])
+        self.table.setHorizontalHeaderLabels(["Pokemon", "Resistance", "Weakness"])
 
         self.layout.addWidget(self.table)
+        self.weaknessCalculation()
         self.populateTable()
 
-
-
-
-        self.layout.addWidget(self.table)
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.populateTable()
 
     def convertToCSV(self, jsonFile, csvOutput):
         with open(jsonFile, 'r') as file:
@@ -70,7 +71,7 @@ class WANDR(QDialog):
             writer.writerows([[value] for value in values])
     
     def fillWANDR(self, csvFile):
-        with open(csvFile, 'r') as file:
+        with open(csvFile, 'r' , newline="") as file:
             csvData = csv.reader(file)
             for row in csvData:
                 row = row[0]
@@ -79,11 +80,66 @@ class WANDR(QDialog):
                     print('rem. values')
                 else:
                     self.pokemonList.append(row)
+    def weaknessCalculation(self):
+        wDR = wandr()
+        # Takes wandr.csv inputs from textcopy.py and converts it to a dictionary.
+        wDR.csvInputToOutput()
+        # Reads each pokemon in new dictionary, and gets typing1 and 2 if needed.
+        wDR.getTyping()
+        # Finds weaknesses and resistance for given typing from getTyping()
+        wDR.pokemonTyping()
+        # Multiplies all values to be given the final multiplier between types.
+        wDR.isolateType()
+        
     def populateTable(self):
-        for row, value in enumerate(self.pokemonList):
-            item = QTableWidgetItem(value)  # Create a QTableWidgetItem for the value
-            self.table.setItem(row, 0, item)  # Set the item in the first column of the current row
+        with open('autolocke/Data/wandrTyping.csv') as file:
+            csvData = csv.reader(file)
+            headers = next(csvData)  # Get the header row
+            num_rows = sum(1 for _ in csvData)  # Count the number of rows
 
+            self.table.setRowCount(num_rows)
+            self.table.setColumnCount(3)
+
+            # Set the table headers
+            self.table.setHorizontalHeaderLabels(["Pokemon", "Weakness", "Resistance"])
+
+            file.seek(0)  # Reset the file reader
+
+            next(csvData)  # Skip the header row
+
+            row = 0
+            for line in csvData:
+                if line:  # Check if the line is not empty
+                    self.table.setItem(row, 0, QTableWidgetItem(line[0]))  # Set the Pokemon name in the first column
+
+                    if len(line) > 1:
+                        weakness_resistance = eval(line[1])  # Parse the combined weakness string into a dictionary
+
+                        weakness = []
+                        resistance = []
+
+                        for type_, value in weakness_resistance.items():
+                            if '/' in value:  # Handle fractions separately
+                                value = float(Fraction(value))
+                            else:
+                                value = float(value)
+
+                            if value > 1:
+                                weakness.append(f"{type_}: {value}\n")
+                            elif value < 1:
+                                resistance.append(f"{type_}: {value}\n")
+
+                        weakness_text = "".join(weakness)
+                        resistance_text = "".join(resistance)
+
+                        self.table.setItem(row, 1, QTableWidgetItem(weakness_text))  # Set the weakness value in the second column
+                        self.table.setItem(row, 2, QTableWidgetItem(resistance_text))  # Set the resistance value in the third column
+
+                row += 1
+
+        # Resize rows and columns to fit contents
+        self.table.resizeRowsToContents()
+        self.table.resizeColumnsToContents()
 
 
 class TutorialSteps(QDialog):
@@ -180,11 +236,12 @@ class TipsDialog(QDialog):
         currentGen = value
         if value == "Fire Red":
             print("FR")
-            self.clasCurrentGen = 'autolocke//Data//fireredroutes.txt'
+            self.clasCurrentGen = 'autolocke/Data/fireredroutes.txt'
             currentGenDirectory = self.clasCurrentGen            
         elif value == "Emerald":
-            self.clasCurrentGen = 'autolocke//Data//emeraldroutes.txt'
+            self.clasCurrentGen = 'autolocke/Data/emeraldroutes.txt'
             currentGenDirectory = self.clasCurrentGen
+        print(currentGenDirectory)
         return currentGenDirectory, currentGen
     
     def convertGenJson(self):
@@ -237,6 +294,7 @@ class MainWindow(QMainWindow):
         self.file_path = 'autolocke/Data/data.json'
         versionLabel = QLabel(f'Version: {currentVersion}')
         layout.addWidget(versionLabel)
+        print(f'AFTER {currentGenDirectory}')
 
     
     def createAction(self):

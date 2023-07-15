@@ -10,6 +10,7 @@ class wandr():
         self.typingDict = {}
         self.weaknessList = []
         self.pokemonTypingDict = {}
+        
 
     def multiplier(self, attack, defense):
         data = pd.read_csv(self.Gen3TableData, index_col=0)
@@ -68,7 +69,7 @@ class wandr():
             next(csv_reader)  # Skip the header row
             
             for row in csv_reader:
-                if row:  # Skip empty lines
+                if row and row[0].strip():  # Skip empty lines and lines with empty first value
                     self.pokeList.append(row[0].strip())
             print(self.pokeList)
     
@@ -124,11 +125,3 @@ class wandr():
         # No specific file extension, dictionary is returned
         # for further processing or storage
         return dictionary
-test = wandr()
-
-test.csvInputToOutput()
-test.getTyping()
-test.pokemonTyping()
-test.isolateType()
-
-
