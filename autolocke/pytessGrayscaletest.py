@@ -5,12 +5,16 @@ import numpy as np
 
 class imageEnhancer:
     def enhanceFunction(imageToEnhance):
-        image = Image.open(imageToEnhance)
-        image = image.convert('L')
-        image = ImageEnhance.Contrast(image).enhance(2.0)
-        image.save('EnhanceImage.png')
-        text = pytesseract.image_to_string(image)
-        return text
+        try:
+            image = Image.open(imageToEnhance)
+            image = image.convert('L')
+            image = ImageEnhance.Contrast(image).enhance(2.0)
+            image.save('EnhanceImage.png')
+            text = pytesseract.image_to_string(image)
+            return text
+        except:
+            print(f"Error occurred during image processing: {str()}")
+            return None
     def emeraldFunction(imageToEnhance):
         image = cv2.imread(imageToEnhance)
         # Convert HSV color space
@@ -36,10 +40,5 @@ class imageEnhancer:
 
         # Apply bitwise-and operation to remove the brown/orange and green regions from the original image
         result = cv2.bitwise_and(image, image, mask=cv2.bitwise_not(combined_mask))
-
-        # Save the resulting image
-        cv2.imwrite('autolocke/Images/RouteImage.png', result)
-
         text = pytesseract.image_to_string(result)
-        print(text)
         return text

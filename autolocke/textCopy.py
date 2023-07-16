@@ -17,10 +17,8 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Emerald Route':[242, 47, 745, 121],
-    'Emerald Caught':[242, 47, 745, 121],
-    'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207],
+    'Emerald Route':[1, 1, 1920,1080],
+    'Emerald Caught':[1, 1, 745, 121],
     'Fire Red Route':[242, 47, 745, 121],
     'Fire Red Caught':[270, 800, 380, 207]
 }
@@ -44,6 +42,7 @@ class ImageDiscover:
     def takeScreenshot(self, section_name, currentGenScreenshot):
         #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
         self.section = cordsDictionary[f'{currentGenScreenshot} {section_name}']
+        print(f'{section_name} + {self.section}')
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -65,11 +64,15 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage, currentDirectory, analyzedGen=None):
         ia = fuzzChecker
+        print(currentDirectory)
         if analyzedGen == "Emerald":
-            text = imageEnhancer.emeraldFunction(requestedImage)
+            if requestedImage == 'autolocke/Images/RouteImage.png':
+                text = imageEnhancer.emeraldFunction(requestedImage)
+            else:
+                return
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
-        if requestedImage == 'autolocke\\Images\\RouteImage.png':
+        if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
             routeFuzz = ia.checkList(currentDirectory,stripText, minScore=95)
             print(self.currentRoute + "CURRENT ROUTE SELF")
@@ -78,7 +81,7 @@ class ImageDiscover:
                 print("in dict")
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
-        elif requestedImage == 'autolocke\\Images\\CaughtImage.png':
+        elif requestedImage == 'autolocke/Images/CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
                 if "!" in text:
