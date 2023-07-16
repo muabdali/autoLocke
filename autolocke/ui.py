@@ -13,11 +13,12 @@ import os
 
 
 cordsDictionary = {
-    'Route_Emerald':[242, 47, 745, 121],
-    'Pokemon':[300, 110, 450, 121],
-    'Caught':[270, 800, 380, 207],
-    'Route_Fire Red':[242, 47, 745, 121]
+    'Emerald Route':[1, 1, 1920,1080],
+    'Emerald Caught':[1, 1, 745, 121],
+    'Fire Red Route':[242, 47, 745, 121],
+    'Fire Red Caught':[270, 800, 380, 207]
 }
+
 
 
 with open('autolocke\Data\data.json') as json_filePoke:

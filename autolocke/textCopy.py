@@ -41,20 +41,17 @@ class ImageDiscover:
 
     def takeScreenshot(self, section_name, currentGenScreenshot):
         #grabs the coords for the screenshot TODO: instead of multiple small screenshots, it should be just one big screenshot where the functions take snippets FROM, thereby halving the amount of screenshots.
+        self.file_path_route = ("autolocke/Images/RouteImage.png")
+        self.file_path_caught = ("autolocke/Images/CaughtImage.png")
         self.section = cordsDictionary[f'{currentGenScreenshot} {section_name}']
-        print(f'{section_name} + {self.section}')
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
+        print(f'{section_name} {currentGenScreenshot} {self.section}')
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
-        images_directory = os.path.join(script_directory, "Images")
         if section_name == 'Route':
-            file_path = os.path.join(images_directory, f'RouteImage.png')
-            screenshot.save(file_path)
-        elif section_name == 'Caught':
-            file_path = os.path.join(images_directory, f'CaughtImage.png')
-            screenshot.save(file_path)
+            screenshot.save(self.file_path_route)
         else:
-            print(f'takescreenshot sectionname error1: section name is {section_name}')
+            screenshot.save(self.file_path_caught)
 
 
     def appendRoutePokeDict(self, CurrentRoute, CaughtPokemon):
@@ -68,13 +65,15 @@ class ImageDiscover:
         if analyzedGen == "Emerald":
             if requestedImage == 'autolocke/Images/RouteImage.png':
                 text = imageEnhancer.emeraldFunction(requestedImage)
+            elif requestedImage == 'autolocke/Images/CaughtImage.png':
+                text = imageEnhancer.enhanceFunction(requestedImage)
             else:
                 return
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=95)
+            routeFuzz = ia.checkList(currentDirectory, stripText, minScore=95)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
@@ -93,16 +92,7 @@ class ImageDiscover:
                 fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
-                """
-                OLD VERSION WITH NO ERROR CATCH
-                if gotchaOrNot == 'Gotcha ':
-                    print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
-                    self.routeDictionary[self.currentRoute] = fuzz_pokemonName
-                    print(self.routeDictionary[self.currentRoute])
-                    json_string = json.dumps(self.routeDictionary)
-                    with open("autolocke\Data\data.json", "w") as f:
-                        f.write(json_string)
-                """
+                
                 if gotchaOrNot == 'Gotcha ':
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     if fuzz_pokemonName:
@@ -112,7 +102,7 @@ class ImageDiscover:
                         self.routeDictionary.pop(self.currentRoute, None)
                     print(self.routeDictionary[self.currentRoute])
                     json_string = json.dumps(self.routeDictionary)
-                    with open("autolocke\Data\data.json", "w") as f:
+                    with open("autolocke/Data/data.json", "w") as f:
                         f.write(json_string)
                 else:
                     return
