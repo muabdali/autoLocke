@@ -399,7 +399,9 @@ class MainWindow(QMainWindow):
                     data = source_file.read()
                 with open(self.temp_file_path, 'w') as destination_file:
                     destination_file.write(data)
-                print("Data saved to:", self.temp_file_path)
+                    print("Data saved to:", self.temp_file_path)
+                with open(self.file_path, 'w') as dest_file:
+                    dest_file.write(data)
             except Exception as e:
                 print(f"Error saving data: {e}")
         else:
