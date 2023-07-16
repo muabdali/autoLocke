@@ -16,7 +16,7 @@ with open('autolocke\style.qss', 'r') as f:
 
 if __name__ == '__main__':
     app = QApplication([])
-    with open('autolocke\style.qss', 'r') as f:
+    with open('autolocke/style.qss', 'r') as f:
         style = f.read()
     app.setStyleSheet(style)
     tutorial1 = TutorialSteps()

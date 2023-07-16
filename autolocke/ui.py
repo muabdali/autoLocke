@@ -21,7 +21,7 @@ cordsDictionary = {
 
 
 
-with open('autolocke\Data\data.json') as json_filePoke:
+with open('autolocke/Data/data.json') as json_filePoke:
     routePokemonDict = json.load(json_filePoke)
 
 
