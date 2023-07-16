@@ -13,7 +13,7 @@ import os
 
 
 cordsDictionary = {
-    'Emerald Route':[1, 1, 1920,1080],
+    'Emerald Route':[1, 1, 1920, 1080],
     'Emerald Caught':[1, 1, 745, 121],
     'Fire Red Route':[242, 47, 745, 121],
     'Fire Red Caught':[270, 800, 380, 207]
@@ -28,7 +28,7 @@ with open('autolocke\Data\data.json') as json_filePoke:
 ab = ImageDiscover(cordsDictionary=cordsDictionary,routeDict=routePokemonDict)
 currentGen = None
 currentGenDirectory = None
-currentVersion = "23.7.01mi2"
+currentVersion = "23.7.01mi3"
 # Format for version = year.month.day.mi/mj.version
 # mi = minor update mj = major update.
 
