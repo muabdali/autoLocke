@@ -17,8 +17,8 @@ x, y, width, height = 242, 47, 745, 121
 # Load the image file and extract text from it
 
 cordsDictionary = {
-    'Emerald Route':[1, 1, 1920,1080],
-    'Emerald Caught':[1, 1, 745, 121],
+    'Emerald Route':[242, 49, 700, 161],
+    'Emerald Caught':[270, 800, 380, 207],
     'Fire Red Route':[242, 47, 745, 121],
     'Fire Red Caught':[270, 800, 380, 207]
 }
@@ -45,7 +45,6 @@ class ImageDiscover:
         self.file_path_caught = ("autolocke/Images/CaughtImage.png")
         self.section = cordsDictionary[f'{currentGenScreenshot} {section_name}']
         x, y, width, height = self.section[0], self.section[1], self.section[2], self.section[3]
-        print(f'{section_name} {currentGenScreenshot} {self.section}')
         screenshot = pyautogui.screenshot(region=(x, y, width, height))
         script_directory = os.path.dirname(os.path.abspath(__file__))
         if section_name == 'Route':
@@ -61,19 +60,18 @@ class ImageDiscover:
 
     def screenshotAnalyze(self, requestedImage, currentDirectory, analyzedGen=None):
         ia = fuzzChecker
-        print(currentDirectory)
         if analyzedGen == "Emerald":
             if requestedImage == 'autolocke/Images/RouteImage.png':
                 text = imageEnhancer.emeraldFunction(requestedImage)
             elif requestedImage == 'autolocke/Images/CaughtImage.png':
-                text = imageEnhancer.enhanceFunction(requestedImage)
+                text = imageEnhancer.emeraldCaught(requestedImage)
             else:
                 return
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory, stripText, minScore=95)
+            routeFuzz = ia.checkList(currentDirectory, stripText, minScore=90)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
@@ -84,16 +82,20 @@ class ImageDiscover:
             if "Gotcha" in text:
                 print("if caught")
                 if "!" in text:
-                    gotchaOrNot, pokemonName = text.split("!\n")
+                    if analyzedGen == "Emerald":
+                        gotchaOrNot, pokemonName = text.split("!")
+                    else:
+                        gotchaOrNot, pokemonName = text.split("!\n")
+
                 elif "|\n" in text:
                     gotchaOrNot, pokemonName = text.split("|\n")
                 else:
                     print("CAUGHT ERROR89 tC.p")
-                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName)
+                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName, minScore=80)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
                 
-                if gotchaOrNot == 'Gotcha ':
+                if 'Gotcha' in gotchaOrNot:
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     if fuzz_pokemonName:
                         self.routeDictionary[self.currentRoute] = fuzz_pokemonName

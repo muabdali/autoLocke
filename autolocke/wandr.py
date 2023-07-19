@@ -19,11 +19,28 @@ class wandr():
 
     def weaknessFinder(self, defense):
         data = pd.read_csv(self.Gen3TableData, index_col=0)
-        weaknesses = data[defense]
-        wDict = data[defense].to_dict()
-        weakOnly = {key for key, value in wDict.items() if value == '2'}
-        return wDict
-    
+
+        # Ensure there are no leading or trailing whitespaces in the 'defense' variable
+        defense = defense.strip()
+
+        # Convert the column names to uppercase
+        data.columns = [col.strip().upper() for col in data.columns]
+
+        # Check if the defense type exists in the DataFrame
+        if defense in data:
+            weaknesses = data[defense]
+
+            # Filter out NaN values and convert to dictionary
+            wDict = weaknesses.dropna().to_dict()
+
+            weakOnly = {key for key, value in wDict.items() if value == '2'}
+            return wDict
+        else:
+            # Handle the case when the defense type is not found in the DataFrame.
+            # You can choose to return an empty dictionary or handle it differently based on your requirements.
+            print(f"Defense type '{defense}' not found in the DataFrame.")
+            return {}
+
     def resistanceFinder(self, defense):
         data = pd.read_csv(self.Gen3TableData, index_col=0)
         resistance = data.loc[defense]
@@ -79,9 +96,9 @@ class wandr():
         for name in self.pokeList:
             for pokemon in data:
                 if pokemon['Name'] == name:
-                    pokemon_types[name] = pokemon['Type1']
+                    pokemon_types[name] = [str(pokemon['Type1'])]  # Convert to string
                     if pokemon['Type2']:
-                        pokemon_types[name].extend(pokemon['Type2'])
+                        pokemon_types[name].extend([str(pokemon['Type2'])])  # Convert to string
                     break
             else:
                 pokemon_types[name] = 'Not Found'
@@ -90,7 +107,7 @@ class wandr():
         
     def isolateType(self):
         combined_weaknesses = {}  # Dictionary to store combined weaknesses
-        
+
         for pokemon, types in self.pokemonTypingDict.items():
             if len(types) > 1:
                 type_string = ' and '.join(types)
@@ -101,9 +118,11 @@ class wandr():
                     combined_weakness = self.weakcombine(dict1=weakness1, dict2=weakness2)
                     combined_weaknesses[pokemon] = combined_weakness
             else:
-                weakness1 = self.weaknessFinder(types[0])
+                # Extract the defense type from the list and convert it to a string
+                defense_type = str(types[0])
+                weakness1 = self.weaknessFinder(defense_type)
                 combined_weaknesses[pokemon] = weakness1
-        
+
         # Save combined_weaknesses dictionary in desired format
         self.save_dictionary_as_csv(combined_weaknesses)
         self.save_dictionary_as_json(combined_weaknesses)

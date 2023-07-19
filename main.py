@@ -7,7 +7,7 @@ import time
 
 """
 Main file for initializing the GUI (ui.py) and therefore the rest of the 
-functions.
+functions.  
 
 stylesheet:
 with open('autolocke\style.qss', 'r') as f:
