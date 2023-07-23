@@ -429,7 +429,7 @@ class MainWindow(QMainWindow):
 
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route', currentGenScreenshot = currentGen)
-        imagePath = os.path.join('autolocke', 'Images', 'RouteImage.png')
+        imagePath = os.path.join('autolocke/Images/RouteImage.png')
         currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
         self.currentRoutelabel.setText(currentRouteAN)
         print(currentRouteAN)
@@ -437,7 +437,7 @@ class MainWindow(QMainWindow):
 
     def analyzeCaught(self):
         pokemonCaughSS = ab.takeScreenshot('Caught', currentGenScreenshot=currentGen)
-        imagePath = os.path.join('autolocke', 'Images', 'CaughtImage.png')
+        imagePath = os.path.join('autolocke/Images/CaughtImage.png')
         pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
         if pokemonCaught is not None:
             print(pokemonCaught)

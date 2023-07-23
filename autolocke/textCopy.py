@@ -22,7 +22,7 @@ cordsDictionary = {
     'Pokemon':[300, 110, 450, 121],
     'Caught':[270, 800, 380, 207],
     'Fire Red Route':[242, 47, 745, 121],
-    'Fire Red Caught':[270, 800, 380, 207]
+    'Fire Red Caught':[250, 820, 380, 207]
 }
 
 """
@@ -69,25 +69,28 @@ class ImageDiscover:
             text = imageEnhancer.emeraldFunction(requestedImage)
         else:
             text = imageEnhancer.enhanceFunction(requestedImage)
-        if requestedImage == 'autolocke\\Images\\RouteImage.png':
+        if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=95)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
                 print("in dict")
                 routeFuzzFinal = routeFuzz
                 self.currentRoute = routeFuzzFinal
-        elif requestedImage == 'autolocke\\Images\\CaughtImage.png':
+        elif requestedImage == 'autolocke/Images/CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
-                if "!" in text:
-                    gotchaOrNot, pokemonName = text.split("!\n")
-                elif "|\n" in text:
-                    gotchaOrNot, pokemonName = text.split("|\n")
+                if "\n" in text:
+                    gotchaOrNot, pokemonName, filler = text.split("\n")
                 else:
-                    print("CAUGHT ERROR89 tC.p")
-                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName)
+                    if "!" in text:
+                        gotchaOrNot, pokemonName = text.split("!")
+                    elif "|\n" in text:
+                        gotchaOrNot, pokemonName = text.split("|\n")
+                    else:
+                        print("CAUGHT ERROR89 tC.p")
+                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName, minScore=80)
                 print(gotchaOrNot, pokemonName)
                 print(fuzz_pokemonName)
                 """
@@ -100,7 +103,7 @@ class ImageDiscover:
                     with open("autolocke\Data\data.json", "w") as f:
                         f.write(json_string)
                 """
-                if gotchaOrNot == 'Gotcha ':
+                if "Gotcha" in gotchaOrNot:
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     if fuzz_pokemonName:
                         self.routeDictionary[self.currentRoute] = fuzz_pokemonName
@@ -109,7 +112,7 @@ class ImageDiscover:
                         self.routeDictionary.pop(self.currentRoute, None)
                     print(self.routeDictionary[self.currentRoute])
                     json_string = json.dumps(self.routeDictionary)
-                    with open("autolocke\Data\data.json", "w") as f:
+                    with open("autolocke/Data/data.json", "w") as f:
                         f.write(json_string)
                 else:
                     return
