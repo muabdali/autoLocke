@@ -71,7 +71,7 @@ class ImageDiscover:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
-            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=90)
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=84)
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:

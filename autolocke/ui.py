@@ -287,7 +287,7 @@ class MainWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.reload_given_json)
-        self.timer.start(250)
+        self.timer.start(150)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
