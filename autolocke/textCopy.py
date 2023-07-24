@@ -20,7 +20,7 @@ cordsDictionary = {
     'Emerald Route':[242, 49, 700, 161],
     'Emerald Caught':[270, 800, 380, 207],
     'Fire Red Route':[242, 47, 745, 121],
-    'Fire Red Caught':[270, 800, 380, 207]
+    'Fire Red Caught':[250, 820, 380, 207]
 }
 
 """
@@ -71,7 +71,11 @@ class ImageDiscover:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
+<<<<<<< HEAD
             routeFuzz = ia.checkList(currentDirectory, stripText, minScore=90)
+=======
+            routeFuzz = ia.checkList(currentDirectory,stripText, minScore=84)
+>>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
@@ -81,6 +85,7 @@ class ImageDiscover:
         elif requestedImage == 'autolocke/Images/CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
+<<<<<<< HEAD
                 if "!" in text:
                     if analyzedGen == "Emerald":
                         gotchaOrNot, pokemonName = text.split("!")
@@ -96,6 +101,31 @@ class ImageDiscover:
                 print(fuzz_pokemonName)
                 
                 if 'Gotcha' in gotchaOrNot:
+=======
+                if "\n" in text:
+                    gotchaOrNot, pokemonName, filler = text.split("\n")
+                else:
+                    if "!" in text:
+                        gotchaOrNot, pokemonName = text.split("!")
+                    elif "|\n" in text:
+                        gotchaOrNot, pokemonName = text.split("|\n")
+                    else:
+                        print("CAUGHT ERROR89 tC.p")
+                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName, minScore=80)
+                print(gotchaOrNot, pokemonName)
+                print(fuzz_pokemonName)
+                """
+                OLD VERSION WITH NO ERROR CATCH
+                if gotchaOrNot == 'Gotcha ':
+                    print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
+                    self.routeDictionary[self.currentRoute] = fuzz_pokemonName
+                    print(self.routeDictionary[self.currentRoute])
+                    json_string = json.dumps(self.routeDictionary)
+                    with open("autolocke\Data\data.json", "w") as f:
+                        f.write(json_string)
+                """
+                if "Gotcha" in gotchaOrNot:
+>>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     if fuzz_pokemonName:
                         self.routeDictionary[self.currentRoute] = fuzz_pokemonName

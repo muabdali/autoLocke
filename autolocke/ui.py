@@ -288,7 +288,7 @@ class MainWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.screenshotLoop)
         self.timer.timeout.connect(self.reload_given_json)
-        self.timer.start(250)
+        self.timer.start(150)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowIcon(QtGui.QIcon('autolocke/UI/logo.png'))
         # self.file_path is the current file path for the data.json VERY IMPORTANT FOR NEXT PATCH
@@ -430,7 +430,11 @@ class MainWindow(QMainWindow):
 
     def analyzeRoute(self):
         currentRouteSS = ab.takeScreenshot('Route', currentGenScreenshot = currentGen)
+<<<<<<< HEAD
         imagePath = ("autolocke/Images/RouteImage.png")
+=======
+        imagePath = os.path.join('autolocke/Images/RouteImage.png')
+>>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
         currentRouteAN = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
         self.currentRoutelabel.setText(currentRouteAN)
         print(currentRouteAN)
@@ -438,8 +442,13 @@ class MainWindow(QMainWindow):
 
     def analyzeCaught(self):
         pokemonCaughSS = ab.takeScreenshot('Caught', currentGenScreenshot=currentGen)
+<<<<<<< HEAD
         imagePath = os.path.join("autolocke/Images/CaughtImage.png")
         pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory, analyzedGen=currentGen)
+=======
+        imagePath = os.path.join('autolocke/Images/CaughtImage.png')
+        pokemonCaught = ab.screenshotAnalyze(imagePath, currentDirectory=currentGenDirectory)
+>>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
         if pokemonCaught is not None:
             print(pokemonCaught)
             self.data['Caught'] = pokemonCaught

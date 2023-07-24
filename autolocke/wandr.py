@@ -3,6 +3,8 @@ import csv
 import ast
 import json
 
+# data querying using pandas and 1to5.csv
+
 class wandr():
     def __init__(self):
         self.Gen3TableData = 'autolocke/Data/1to5.csv'
