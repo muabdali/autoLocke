@@ -71,11 +71,7 @@ class ImageDiscover:
             text = imageEnhancer.enhanceFunction(requestedImage)
         if requestedImage == 'autolocke/Images/RouteImage.png':
             stripText = text.strip()
-<<<<<<< HEAD
-            routeFuzz = ia.checkList(currentDirectory, stripText, minScore=90)
-=======
             routeFuzz = ia.checkList(currentDirectory,stripText, minScore=84)
->>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
             print(self.currentRoute + "CURRENT ROUTE SELF")
             
             if routeFuzz in self.routeDictionary:
@@ -85,23 +81,6 @@ class ImageDiscover:
         elif requestedImage == 'autolocke/Images/CaughtImage.png':
             if "Gotcha" in text:
                 print("if caught")
-<<<<<<< HEAD
-                if "!" in text:
-                    if analyzedGen == "Emerald":
-                        gotchaOrNot, pokemonName = text.split("!")
-                    else:
-                        gotchaOrNot, pokemonName = text.split("!\n")
-
-                elif "|\n" in text:
-                    gotchaOrNot, pokemonName = text.split("|\n")
-                else:
-                    print("CAUGHT ERROR89 tC.p")
-                fuzz_pokemonName = ia.checkList('autolocke/Data/NatDexPokemonG3.txt', pokemonName, minScore=80)
-                print(gotchaOrNot, pokemonName)
-                print(fuzz_pokemonName)
-                
-                if 'Gotcha' in gotchaOrNot:
-=======
                 if "\n" in text:
                     gotchaOrNot, pokemonName, filler = text.split("\n")
                 else:
@@ -125,7 +104,6 @@ class ImageDiscover:
                         f.write(json_string)
                 """
                 if "Gotcha" in gotchaOrNot:
->>>>>>> 39c54c80c394d7f9130cf835ecdbe78b9337d658
                     print(f"Caught {fuzz_pokemonName} in {self.currentRoute}")
                     if fuzz_pokemonName:
                         self.routeDictionary[self.currentRoute] = fuzz_pokemonName
