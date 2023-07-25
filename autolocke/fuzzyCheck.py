@@ -2,7 +2,7 @@ from fuzzywuzzy import process
 
 class fuzzChecker:
     @staticmethod
-    def checkList(pokeList, nameToCheck, minScore=0):
+    def checkList(pokeList, nameToCheck, minScore):
         with open(pokeList, 'r') as f:
             string_list = [line.strip() for line in f]
         best_match, score = process.extractOne(nameToCheck, string_list)
