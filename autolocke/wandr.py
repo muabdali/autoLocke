@@ -72,7 +72,8 @@ class wandr():
             for row in csv_reader:
                 if row and row[0].strip():  # Skip empty lines and lines with empty first value
                     self.pokeList.append(row[0].strip())
-            print(self.pokeList)
+
+        print(self.pokeList)
     
     def pokemonTyping(self):
         with open('autolocke/Data/pokeTypeMasterSheet.json') as file:
@@ -94,18 +95,22 @@ class wandr():
         combined_weaknesses = {}  # Dictionary to store combined weaknesses
         
         for pokemon, types in self.pokemonTypingDict.items():
-            if len(types) > 1:
-                type_string = ' and '.join(types)
-                if len(type_string) > 8:
-                    type1, type2 = type_string.split(" and ")
-                    weakness1 = self.weaknessFinder(type1)
-                    weakness2 = self.weaknessFinder(type2)
-                    combined_weakness = self.weakcombine(dict1=weakness1, dict2=weakness2)
-                    combined_weaknesses[pokemon] = combined_weakness
-            else:
-                weakness1 = self.weaknessFinder(types[0])
+            if types == "Not Found":
+                weakness1 = "NotFound"
                 combined_weaknesses[pokemon] = weakness1
-        
+            else:
+                if len(types) > 1:
+                    type_string = ' and '.join(types)
+                    if len(type_string) > 8:
+                        type1, type2 = type_string.split(" and ")
+                        weakness1 = self.weaknessFinder(type1)
+                        weakness2 = self.weaknessFinder(type2)
+                        combined_weakness = self.weakcombine(dict1=weakness1, dict2=weakness2)
+                        combined_weaknesses[pokemon] = combined_weakness
+                else:
+                    weakness1 = self.weaknessFinder(types[0])
+                    combined_weaknesses[pokemon] = weakness1
+            
         # Save combined_weaknesses dictionary in desired format
         self.save_dictionary_as_csv(combined_weaknesses)
         self.save_dictionary_as_json(combined_weaknesses)
