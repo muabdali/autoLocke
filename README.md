@@ -1,3 +1,5 @@
+# DEPRECIATED, MAY NO LONGER WORK
+
 # autoLocke
 
 This is a desktop application built in Python that is meant to assist with
@@ -40,9 +42,4 @@ RAM - 4GB
 
 
 
-
-
-
-
-![Rotom](https://assets.pokemon.com/assets/cms2/img/pokedex/full/479.png)
 
